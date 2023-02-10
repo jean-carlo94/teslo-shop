@@ -21,6 +21,8 @@
       "@Layouts*": ["./components/layouts"],
       "@Ui*": ["./components/ui"],
       "@Interfaces*": ["./interfaces"],
+      "@Models*": ["./models"],
+      "@Database*": ["./database"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
