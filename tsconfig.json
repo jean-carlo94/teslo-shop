@@ -20,6 +20,7 @@
       "@Themes*": ["./themes"],
       "@Layouts*": ["./components/layouts"],
       "@Ui*": ["./components/ui"],
+      "@Interfaces*": ["./interfaces"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
