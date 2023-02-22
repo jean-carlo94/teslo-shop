@@ -6,12 +6,12 @@ import { CartList, OrderSymmary } from '@components/cart';
 
 const CartPage = () => {
   return (
-    <ShopLayout title='Carrito - 3' pageDescription={'Carrito de compras de la tieda'}>
+    <ShopLayout title='Carrito - Checkout' pageDescription={'Carrito de compras de la tienda'}>
       <Typography variant='h1' component='h1'>Carrito</Typography>
 
       <Grid container>
         <Grid item xs={ 12 } sm={ 7 }>
-          <CartList editable={true} />
+          <CartList editable />
         </Grid>
         <Grid item xs={ 12 } sm={ 5 }>
           <Card className="summary-card">

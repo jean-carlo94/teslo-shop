@@ -1,14 +1,32 @@
-import React from 'react'
-import { Box, Divider, Drawer, IconButton, Input, InputAdornment, List, ListItem, ListItemIcon, ListItemText, ListSubheader } from "@mui/material"
+import React, { useState } from 'react'
+import { Box, Divider, Drawer, IconButton, Input, InputAdornment, List, ListItem, ButtonBase, ListItemIcon, ListItemText, ListSubheader } from "@mui/material"
 import { AccountCircleOutlined, AdminPanelSettings, CategoryOutlined, ConfirmationNumberOutlined, EscalatorWarningOutlined, FemaleOutlined, LoginOutlined, MaleOutlined, SearchOutlined, VpnKeyOutlined } from "@mui/icons-material"
+import { useUi } from '@context/ui'
+import { useRouter } from 'next/router';
 
 
 export const SideMenu = () => {
+
+    const router = useRouter();
+    const { isMenuOpen, toggleSideMenu } = useUi();
+    const [searchTearm, setSearchTearm] = useState('')
+
+    const onSearchTerm = () => {
+        if( searchTearm.trim().length === 0 ) return;
+        navigateTo(`/search/${searchTearm}`);
+    }
+
+    const navigateTo = ( url: string) => {
+        toggleSideMenu();
+        router.push(url);
+    }
+
   return (
     <Drawer
-        open={ false }
+        open={ isMenuOpen }
         anchor='right'
         sx={{ backdropFilter: 'blur(4px)', transition: 'all 0.5s ease-out' }}
+        onClose={ toggleSideMenu }
     >
         <Box sx={{ width: 250, paddingTop: 5 }}>
             
@@ -16,18 +34,22 @@ export const SideMenu = () => {
 
                 <ListItem>
                     <Input
+                        autoFocus
+                        value={ searchTearm }
+                        onChange={ (event) => setSearchTearm( event.target.value ) }
+                        onKeyPress={ (event) => event.key === 'Enter' ? onSearchTerm() : null }
                         type='text'
                         placeholder="Buscar..."
                         endAdornment={
                             <InputAdornment position="end">
                                 <IconButton
-                                aria-label="toggle password visibility"
+                                    onClick={ onSearchTerm }
                                 >
                                  <SearchOutlined />
                                 </IconButton>
                             </InputAdornment>
                         }
-                />
+                    />
                 </ListItem>
 
                 <ListItem>
@@ -44,28 +66,38 @@ export const SideMenu = () => {
                     <ListItemText primary={'Mis Ordenes'} />
                 </ListItem>
 
-
                 <ListItem sx={{ display: { xs: '', sm: 'none' } }}>
-                    <ListItemIcon>
-                        <MaleOutlined/>
-                    </ListItemIcon>
-                    <ListItemText primary={'Hombres'} />
+                    <ButtonBase
+                        onClick={() => navigateTo('/category/men')}
+                    >
+                        <ListItemIcon>
+                            <MaleOutlined/>
+                        </ListItemIcon>
+                        <ListItemText primary={'Hombres'} />
+                    </ButtonBase>
                 </ListItem>
 
                 <ListItem sx={{ display: { xs: '', sm: 'none' } }}>
-                    <ListItemIcon>
-                        <FemaleOutlined/>
-                    </ListItemIcon>
-                    <ListItemText primary={'Mujeres'} />
+                    <ButtonBase
+                        onClick={() => navigateTo('/category/women')}
+                    >
+                        <ListItemIcon>
+                            <FemaleOutlined/>
+                        </ListItemIcon>
+                        <ListItemText primary={'Mujeres'} />
+                    </ButtonBase>
                 </ListItem>
 
                 <ListItem sx={{ display: { xs: '', sm: 'none' } }}>
-                    <ListItemIcon>
-                        <EscalatorWarningOutlined/>
-                    </ListItemIcon>
-                    <ListItemText primary={'Niños'} />
+                    <ButtonBase
+                        onClick={() => navigateTo('/category/kids')}
+                    >
+                        <ListItemIcon>
+                            <EscalatorWarningOutlined/>
+                        </ListItemIcon>
+                        <ListItemText primary={'Niños'} />
+                    </ButtonBase>
                 </ListItem>
-
 
                 <ListItem>
                     <ListItemIcon>

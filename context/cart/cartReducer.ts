@@ -1,0 +1,54 @@
+import { CartState } from './';
+import { ICartProduct } from '@Interfaces';
+
+type CartActionType =
+   | { type: '[Cart] - LoadCart From Cookies | Storage', payload: ICartProduct[] }
+   | { type: '[Cart] - Update Products In Cart', payload: ICartProduct[] }
+   | { type: '[Cart] - Change Cart Product Cuantity', payload: ICartProduct }
+   | { type: '[Cart] - Remove Product In Cart', payload: ICartProduct }
+   | { 
+      type: '[Cart] - Update Order Sumary', 
+      payload: {
+         numberOfItems: number;
+         subTotal: number;
+         tax: number;
+         total: number; 
+      }
+   }
+
+export const cartReducer = ( state: CartState, action: CartActionType): CartState => {
+
+   switch (action.type) {
+      case '[Cart] - LoadCart From Cookies | Storage':
+         return {
+            ...state,
+            cart: [ ...action.payload ]
+            }
+      case '[Cart] - Update Products In Cart':
+         return {
+            ...state,
+            cart: [ ...action.payload]
+         }
+      case '[Cart] - Change Cart Product Cuantity':
+         return {
+            ...state,
+            cart: state!.cart!.map( product => {
+               if( product._id !== action.payload._id ) return product;
+               if( product._id !== action.payload.size ) return product;
+               return action.payload;
+            })
+         }
+      case '[Cart] - Remove Product In Cart':
+         return {
+            ...state,
+            cart: state!.cart!.filter(product => !(product._id === action.payload._id && product.size === action.payload.size) )
+         }  
+      case '[Cart] - Update Order Sumary':
+         return {
+            ...state,
+            ...action.payload
+         }
+      default:
+            return state;
+   }
+};
