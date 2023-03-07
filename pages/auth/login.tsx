@@ -41,7 +41,7 @@ const LoginPage = () => {
     } catch (error) {
       setShowError(true);
       setTimeout(() => setShowError(false), 3000);
-    }
+    };
     //TODO: redireccional a la pantalla anterior
   };
 
