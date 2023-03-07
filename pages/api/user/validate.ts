@@ -19,7 +19,7 @@ export default function handler (req: NextApiRequest, res: NextApiResponse<Data>
         case 'GET':
                 return checkJWT( req, res );    
         default:
-                res.status(400).json({ message: 'Bad Requiest' })
+                res.status(400).json({ message: 'Bad Request' })
             break;
     };
 };

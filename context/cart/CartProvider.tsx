@@ -6,10 +6,10 @@ import Cookie from 'js-cookie'
 export interface CartState{
     cart?: ICartProduct[];
     children?: React.ReactNode;
-    numberOfItems: number;
-    subTotal: number;
-    tax: number;
-    total: number;
+    numberOfItems?: number;
+    subTotal?: number;
+    tax?: number;
+    total?: number;
 }
 
 const CART_INITIAL_STATE: CartState = {
@@ -47,14 +47,14 @@ useEffect(() => {
         const subTotal = state.cart!.reduce(( prev, current ) => (current.price * current.quantity) + prev, 0);
         const taxRate = Number(process.env.NEXT_PUBLIC_TAX_RATE || 0);
 
-        const orderSumary = {
+        const orderSummary = {
             numberOfItems,
             subTotal,
             tax: subTotal * taxRate,
             total: subTotal * ( taxRate + 1 )
         };
 
-        dispatch({ type:'[Cart] - Update Order Sumary', payload: orderSumary })        
+        dispatch({ type:'[Cart] - Update Order Summary', payload: orderSummary })        
     }
 }, [state.cart]);
 
@@ -63,8 +63,8 @@ const addProductToCart = ( product: ICartProduct ) => {
     const producInCart = state.cart!.some( p => p._id === product._id );
     if( !producInCart ) return dispatch({ type: '[Cart] - Update Products In Cart', payload:[...state.cart!, product] });
     //Nueva Talla
-    const productInCartButDifferenSize = state.cart!.some( p => p._id === product._id && p.size === product.size );
-    if( !productInCartButDifferenSize ) return dispatch({ type: '[Cart] - Update Products In Cart', payload: [...state.cart!, product] });
+    const productInCartButDifferentSize = state.cart!.some( p => p._id === product._id && p.size === product.size );
+    if( !productInCartButDifferentSize ) return dispatch({ type: '[Cart] - Update Products In Cart', payload: [...state.cart!, product] });
 
     //Sumar Cantidad
     const updateProducts = state.cart!.map( p => {
@@ -78,7 +78,7 @@ const addProductToCart = ( product: ICartProduct ) => {
 };
 
 const updateCartQuantity = ( product: ICartProduct ) => {
-    dispatch({ type: '[Cart] - Change Cart Product Cuantity', payload: product });
+    dispatch({ type: '[Cart] - Change Cart Product Quantity', payload: product });
 }
 
 const removeCartProduct = ( product: ICartProduct ) => {

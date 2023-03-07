@@ -3,13 +3,13 @@ import { db, seedDatabase } from '@Database'
 import { Product, User } from '@Models';
 
 type Data = {
-    menssage: string
+    message: string
 }
 
 export default async function handler (req: NextApiRequest, res: NextApiResponse<Data>) {
 
     if( process.env.NODE_ENV === 'production' ) {
-        return res.status(401).json({ menssage: 'No tiene acceso a este servicio'})
+        return res.status(401).json({ message: 'No tiene acceso a este servicio'})
     };
 
     await db.connect();
@@ -22,5 +22,5 @@ export default async function handler (req: NextApiRequest, res: NextApiResponse
 
     await db.disconnect();
 
-    res.status(200).json({ menssage: 'Proceso realizado correctamente' })
+    res.status(200).json({ message: 'Proceso realizado correctamente' })
 }

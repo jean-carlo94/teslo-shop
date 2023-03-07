@@ -31,7 +31,7 @@ const ProducPage:NextPage<Props> = ({ product }) => {
 
 */
 
-const ProducPage:NextPage<Props> = ({ product }) => {
+const ProductPag:NextPage<Props> = ({ product }) => {
 
   const router = useRouter();
   const { addProductToCart } = useCart();
@@ -54,14 +54,14 @@ const ProducPage:NextPage<Props> = ({ product }) => {
     }) )
   };
 
-  const onUpdateQuiantity = ( quantity: number ) => {
+  const onUpdateQuantity = ( quantity: number ) => {
     setTempCartProduct( currentProduct => ({
       ...currentProduct,
       quantity
     }) )
   };
 
-  const onAddProduc = () => {
+  const onAddProduct = () => {
 
     if( !tempCartProduct.size ) { return; };
 
@@ -91,7 +91,7 @@ const ProducPage:NextPage<Props> = ({ product }) => {
               <ItemCounter
                 currenValue={ tempCartProduct.quantity }
                 maxValue={ product.inStock > 10 ? 10 : product.inStock }
-                updateQuiantity={ onUpdateQuiantity }
+                updateQuantity={ onUpdateQuantity }
               />
               <ProductSizeSelector 
                 selectedSize={ tempCartProduct.size } 
@@ -104,7 +104,7 @@ const ProducPage:NextPage<Props> = ({ product }) => {
             {
               (product.inStock > 0)
               ? (
-                <Button color="secondary" className="circular-btn" onClick={ onAddProduc }>
+                <Button color="secondary" className="circular-btn" onClick={ onAddProduct }>
                   {
                     tempCartProduct.size
                     ? 'Agregar al carrito'
@@ -188,4 +188,4 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   };
 };
 */
-export default ProducPage
+export default ProductPag

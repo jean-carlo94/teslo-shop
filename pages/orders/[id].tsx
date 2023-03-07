@@ -4,7 +4,7 @@ import { Box, Card, CardContent, Chip, Divider, Grid, Link, Typography } from '@
 import { CreditCardOutlined, CreditScoreOutlined } from '@mui/icons-material';
 
 import { ShopLayout } from '@Layouts';
-import { CartList, OrderSymmary } from '@components/cart';
+import { CartList, OrderSummary } from '@components/cart';
 
 const OrderPage = () => {
     return (
@@ -58,7 +58,7 @@ const OrderPage = () => {
                       <Link underline='always'>Editar</Link>
                     </NextLink>
                   </Box>
-                  <OrderSymmary />
+                  <OrderSummary />
  
                   <Box sx={{ mt: 3 }}>
                     {/*TODO: PAGAR */}

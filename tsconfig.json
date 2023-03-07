@@ -24,7 +24,7 @@
       "@Models*": ["./models"],
       "@Database*": ["./database"],
       "@Hooks*": ["./hooks"],
-      "@Contex*": ["./context"],
+      "@Context*": ["./context"],
       "@Utils*": ["./utils"],
       "@Api*": ["./api"],
     }

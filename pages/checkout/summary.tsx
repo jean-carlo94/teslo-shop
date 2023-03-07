@@ -3,7 +3,7 @@ import NextLink from 'next/link';
 import { Box, Button, Card, CardContent, Divider, Grid, Link, Typography } from '@mui/material';
 
 import { ShopLayout } from '@Layouts';
-import { CartList, OrderSymmary } from '@components/cart';
+import { CartList, OrderSummary } from '@components/cart';
 
 const SummaryPage = () => {
     return (
@@ -39,7 +39,7 @@ const SummaryPage = () => {
                       <Link underline='always'>Editar</Link>
                     </NextLink>
                   </Box>
-                  <OrderSymmary />
+                  <OrderSummary />
  
                   <Box sx={{ mt: 3 }}>
                     <Button color='secondary' className='circular-btn' fullWidth>

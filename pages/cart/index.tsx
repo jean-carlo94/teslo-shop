@@ -2,7 +2,7 @@ import React from 'react'
 import { Box, Button, Card, CardContent, Divider, Grid, Typography } from '@mui/material';
 
 import { ShopLayout } from '@Layouts';
-import { CartList, OrderSymmary } from '@components/cart';
+import { CartList, OrderSummary } from '@components/cart';
 
 const CartPage = () => {
   return (
@@ -19,7 +19,7 @@ const CartPage = () => {
               <Typography variant='h2'>Orden</Typography>
               <Divider sx={{ my:1 }} />
 
-              <OrderSymmary />
+              <OrderSummary />
 
               <Box sx={{ mt: 3 }}>
                 <Button color='secondary' className='circular-btn' fullWidth>

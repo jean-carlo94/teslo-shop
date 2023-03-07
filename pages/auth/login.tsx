@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useRouter } from 'next/router';
 import NextLink from 'next/link';
 import { Box, Button, Chip, Grid, Link, TextField, Typography } from '@mui/material';
 import { ErrorOutline } from '@mui/icons-material';
@@ -7,6 +8,7 @@ import { useForm } from 'react-hook-form';
 import { AuthLayout } from '@Layouts';
 import { validations } from '@utils';
 import { tesloApi } from '@Api';
+import { useAuth } from '@Context';
 
 type FormData = {
   email   : string;
@@ -15,6 +17,8 @@ type FormData = {
 
 const LoginPage = () => {
 
+  const { loginUser } = useAuth();
+  const router = useRouter();
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
   const [showError, setShowError] = useState(false)
   
@@ -32,16 +36,16 @@ const LoginPage = () => {
     
     setShowError(false);
 
-    try {
-      const { data } = await tesloApi.post('/user/login', {email, password});
-      const { token, user } = data;
+    const isValidUser = await loginUser( email, password );
 
-      console.log({ token, user });
-      
-    } catch (error) {
+    if(!isValidUser){
       setShowError(true);
       setTimeout(() => setShowError(false), 3000);
-    };
+
+      return;
+    }
+
+    router.replace('/');
     //TODO: redireccional a la pantalla anterior
   };
 

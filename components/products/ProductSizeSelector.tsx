@@ -6,7 +6,7 @@ interface Props {
     selectedSize?: ISize;
     sizes: ISize[];
 
-    //Metrhod
+    //Method
     onSelectedSize: ( size: ISize ) => void;
 }
 

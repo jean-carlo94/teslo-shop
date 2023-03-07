@@ -24,7 +24,7 @@ const getSearchProducts = async (req: NextApiRequest, res: NextApiResponse<Data>
 
     if( q.length === 0 ){
         return res.status(400).json({
-            message: 'Debe de especificar el query de busqieda'
+            message: 'Debe de especificar el query de busqueda'
         });
     };
 

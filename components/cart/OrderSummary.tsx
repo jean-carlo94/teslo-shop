@@ -3,7 +3,7 @@ import { Grid, Typography } from '@mui/material';
 import { useCart } from '@context';
 import { currency } from '@utils';
 
-export const OrderSymmary = () => {
+export const OrderSummary = () => {
 
   const { numberOfItems, subTotal, total, tax } = useCart();
 
@@ -14,7 +14,7 @@ export const OrderSymmary = () => {
       </Grid>
 
       <Grid item xs={6} display='flex' justifyContent='end'>
-        <Typography>{ numberOfItems } { numberOfItems >= 1 ? 'Productos' : 'Producto'}</Typography>
+        <Typography>{ numberOfItems } { numberOfItems! >= 1 ? 'Productos' : 'Producto'}</Typography>
       </Grid>
 
       <Grid item xs={6}>
@@ -22,7 +22,7 @@ export const OrderSymmary = () => {
       </Grid>
 
       <Grid item xs={6} display='flex' justifyContent='end'>
-        <Typography>{ currency.format(subTotal) }</Typography>
+        <Typography>{ currency.format(subTotal!) }</Typography>
       </Grid>
 
       <Grid item xs={6}>
@@ -30,7 +30,7 @@ export const OrderSymmary = () => {
       </Grid>
 
       <Grid item xs={6} display='flex' justifyContent='end'>
-        <Typography>{ currency.format(tax) }</Typography>
+        <Typography>{ currency.format(tax!) }</Typography>
       </Grid>
 
       <Grid item xs={6} sx={{mt:1}}>
@@ -38,7 +38,7 @@ export const OrderSymmary = () => {
       </Grid>
 
       <Grid item xs={6} display='flex' justifyContent='end'>
-        <Typography variant='subtitle1'>{ currency.format(total) }</Typography>
+        <Typography variant='subtitle1'>{ currency.format(total!) }</Typography>
       </Grid>
 
     </Grid>

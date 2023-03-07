@@ -14,8 +14,8 @@ export const CartList:FC<Props> = ({ editable }) => {
 
   const { cart, updateCartQuantity, removeCartProduct } = useCart();
 
-  const onNewCartQuantityValue = ( product: ICartProduct, newQuiantityValue: number ) => {
-    product.quantity = newQuiantityValue;
+  const onNewCartQuantityValue = ( product: ICartProduct, newQuantityValue: number ) => {
+    product.quantity = newQuantityValue;
     updateCartQuantity( product );
   }
 
@@ -44,18 +44,17 @@ export const CartList:FC<Props> = ({ editable }) => {
                       <Typography variant='body1'>{ product.title }</Typography>
                       <Typography variant='body2'>Talla: <strong>{ product.size }</strong></Typography>
 
-                      {/* Condicional */}
                       {
                         editable
                         ? (
                             <ItemCounter
                               currenValue={ product.quantity }
                               maxValue={ 10 }
-                              updateQuiantity={ (value) => onNewCartQuantityValue( product, value )}
+                              updateQuantity={ (value) => onNewCartQuantityValue( product, value )}
                             />
                           )
                         : (
-                          <Typography variant='h5'>{ product.quantity } { product.quantity > 1 ? 'Productos' : 'Prodcuto'}</Typography>
+                          <Typography variant='h5'>{ product.quantity } { product.quantity > 1 ? 'Productos' : 'Producto'}</Typography>
                         )
                       }
                       

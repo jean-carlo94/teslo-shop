@@ -10,7 +10,7 @@ interface Props {
 export const ProductCard: FC<Props> = ({product}) => {
 
     const [isHovered, setIsHovered] = useState(false);
-    const [isImageLoaded, setisImageLoaded] = useState(false)
+    const [isImageLoaded, setIsImageLoaded] = useState(false)
 
     const productImage = useMemo(() => {
         return isHovered
@@ -35,7 +35,7 @@ export const ProductCard: FC<Props> = ({product}) => {
                             product.inStock === 0 && (
                                 <Chip 
                                     color='primary'
-                                    label='No hay Diosponibles'
+                                    label='No hay Disponibles'
                                     sx={{ position: 'absolute', zIndex: 99, top: '10px', left: '10px' }}
                                 />
                             )
@@ -45,7 +45,7 @@ export const ProductCard: FC<Props> = ({product}) => {
                             className='fadeIn'
                             image={ productImage }
                             alt={ product.title }
-                            onLoad={ () => setisImageLoaded(true) }
+                            onLoad={ () => setIsImageLoaded(true) }
                         />
                     </CardActionArea>
                 </Link>

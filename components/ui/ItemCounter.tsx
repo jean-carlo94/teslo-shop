@@ -6,19 +6,19 @@ interface Props {
   currenValue: number;
   maxValue: number;
   //Methods
-  updateQuiantity: ( newValue: number ) => void;
+  updateQuantity: ( newValue: number ) => void;
 }
 
-export const ItemCounter:FC<Props> = ({ currenValue, maxValue, updateQuiantity }) => {
+export const ItemCounter:FC<Props> = ({ currenValue, maxValue, updateQuantity: updateQuantity }) => {
 
   const addOrRemove = (value:number) => {
     if( value === -1 ){
       if( currenValue === 1) return;
-      return updateQuiantity( currenValue - 1);
+      return updateQuantity( currenValue - 1);
     };
 
     if( currenValue >= maxValue ) return;
-    updateQuiantity( currenValue + 1);
+    updateQuantity( currenValue + 1);
   }
   
   return (

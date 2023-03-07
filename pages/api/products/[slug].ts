@@ -10,7 +10,7 @@ type Data =
 export default function handler (req: NextApiRequest, res: NextApiResponse<Data>) {
     switch ( req.method ) {
         case 'GET':
-            return getProductBySlud( req, res);    
+            return getProductBySlug( req, res);    
         default:
             return res.status(400).json({
                 message: 'Bad request'
@@ -18,7 +18,7 @@ export default function handler (req: NextApiRequest, res: NextApiResponse<Data>
     };
 }
 
-const getProductBySlud = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
+const getProductBySlug = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
     
     const { slug } = req.query;
 

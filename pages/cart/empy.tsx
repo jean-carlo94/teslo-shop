@@ -5,7 +5,7 @@ import { RemoveShoppingCartOutlined } from '@mui/icons-material'
 
 import { ShopLayout } from '@Layouts'
 
-const EmpyPage = () => {
+const EmptyPage = () => {
   return (
     <ShopLayout title='Carrito Vacio' pageDescription='No hay articulos en el carrito de compras'>
         <Box 
@@ -29,4 +29,4 @@ const EmpyPage = () => {
   )
 }
 
-export default EmpyPage
+export default EmptyPage
