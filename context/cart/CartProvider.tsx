@@ -60,8 +60,8 @@ useEffect(() => {
 
 const addProductToCart = ( product: ICartProduct ) => {
     //Nuevo Producto
-    const producInCart = state.cart!.some( p => p._id === product._id );
-    if( !producInCart ) return dispatch({ type: '[Cart] - Update Products In Cart', payload:[...state.cart!, product] });
+    const productInCart = state.cart!.some( p => p._id === product._id );
+    if( !productInCart ) return dispatch({ type: '[Cart] - Update Products In Cart', payload:[...state.cart!, product] });
     //Nueva Talla
     const productInCartButDifferentSize = state.cart!.some( p => p._id === product._id && p.size === product.size );
     if( !productInCartButDifferentSize ) return dispatch({ type: '[Cart] - Update Products In Cart', payload: [...state.cart!, product] });

@@ -13,12 +13,12 @@ export const Navbar = () => {
     const { asPath, push } = useRouter(); 
     const { numberOfItems } = useCart();
 
-    const [searchTearm, setSearchTearm] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
     const [isSearchVisible, setIsSearchVisible] = useState(false);
     
     const onSearchTerm = () => {
-        if( searchTearm.trim().length === 0 ) return;
-        push(`/search/${searchTearm}`);
+        if( searchTerm.trim().length === 0 ) return;
+        push(`/search/${searchTerm}`);
     }
 
   return (
@@ -62,8 +62,8 @@ export const Navbar = () => {
                         sx={{ display: { xs:'none', sm:'flex' } }}
                         autoFocus
                         className="fadeIn"
-                        value={ searchTearm }
-                        onChange={ (event) => setSearchTearm( event.target.value ) }
+                        value={ searchTerm }
+                        onChange={ (event) => setSearchTerm( event.target.value ) }
                         onKeyPress={ (event) => event.key === 'Enter' ? onSearchTerm() : null }
                         type='text'
                         placeholder="Buscar..."
@@ -101,7 +101,7 @@ export const Navbar = () => {
             <NextLink href={'/cart'} passHref legacyBehavior>
                 <Link>
                     <IconButton>
-                        <Badge badgeContent={ numberOfItems > 9 ? '+9' : numberOfItems } color='secondary'>
+                        <Badge badgeContent={ numberOfItems! > 9 ? '+9' : numberOfItems } color='secondary'>
                             <ShoppingCartOutlined />
                         </Badge>
                     </IconButton>

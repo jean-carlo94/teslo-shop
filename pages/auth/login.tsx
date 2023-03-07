@@ -45,8 +45,10 @@ const LoginPage = () => {
       return;
     }
 
-    router.replace('/');
-    //TODO: redireccional a la pantalla anterior
+    const destination = router.query.p?.toString() || '/';
+    console.log(destination);
+    
+    router.replace(destination);
   };
 
   return (

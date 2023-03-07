@@ -1,19 +1,23 @@
 import React, { useState } from 'react'
-import { Box, Divider, Drawer, IconButton, Input, InputAdornment, List, ListItem, ButtonBase, ListItemIcon, ListItemText, ListSubheader } from "@mui/material"
+import { Box, Divider, Drawer, IconButton, Input, InputAdornment, List, ListItem, ListItemIcon, ListItemText, ListSubheader, ListItemButton } from "@mui/material"
 import { AccountCircleOutlined, AdminPanelSettings, CategoryOutlined, ConfirmationNumberOutlined, EscalatorWarningOutlined, FemaleOutlined, LoginOutlined, MaleOutlined, SearchOutlined, VpnKeyOutlined } from "@mui/icons-material"
+
 import { useUi } from '@context/ui'
 import { useRouter } from 'next/router';
+import { useAuth } from '@Context';
 
 
 export const SideMenu = () => {
 
     const router = useRouter();
+    const { isLoggedIn, user, logOut } = useAuth(); 
     const { isMenuOpen, toggleSideMenu } = useUi();
-    const [searchTearm, setSearchTearm] = useState('')
+
+    const [searchTerm, setSearchTerm] = useState('');
 
     const onSearchTerm = () => {
-        if( searchTearm.trim().length === 0 ) return;
-        navigateTo(`/search/${searchTearm}`);
+        if( searchTerm.trim().length === 0 ) return;
+        navigateTo(`/search/${searchTerm}`);
     }
 
     const navigateTo = ( url: string) => {
@@ -35,8 +39,8 @@ export const SideMenu = () => {
                 <ListItem>
                     <Input
                         autoFocus
-                        value={ searchTearm }
-                        onChange={ (event) => setSearchTearm( event.target.value ) }
+                        value={ searchTerm }
+                        onChange={ (event) => setSearchTerm( event.target.value ) }
                         onKeyPress={ (event) => event.key === 'Enter' ? onSearchTerm() : null }
                         type='text'
                         placeholder="Buscar..."
@@ -51,92 +55,127 @@ export const SideMenu = () => {
                         }
                     />
                 </ListItem>
+                {
+                    isLoggedIn && 
+                    (   
+                        <>
+                            <ListItem disablePadding>
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        <AccountCircleOutlined/>
+                                    </ListItemIcon>
+                                    <ListItemText primary={'Perfil'} />
+                                </ListItemButton>
+                            </ListItem>
 
-                <ListItem>
-                    <ListItemIcon>
-                        <AccountCircleOutlined/>
-                    </ListItemIcon>
-                    <ListItemText primary={'Perfil'} />
-                </ListItem>
-
-                <ListItem>
-                    <ListItemIcon>
-                        <ConfirmationNumberOutlined/>
-                    </ListItemIcon>
-                    <ListItemText primary={'Mis Ordenes'} />
-                </ListItem>
+                            <ListItem disablePadding>
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        <ConfirmationNumberOutlined/>
+                                    </ListItemIcon>
+                                    <ListItemText primary={'Mis Ordenes'} />
+                                </ListItemButton>
+                            </ListItem>
+                        </>
+                    )
+                }
 
                 <ListItem sx={{ display: { xs: '', sm: 'none' } }}>
-                    <ButtonBase
+                    <ListItemButton
                         onClick={() => navigateTo('/category/men')}
                     >
                         <ListItemIcon>
                             <MaleOutlined/>
                         </ListItemIcon>
                         <ListItemText primary={'Hombres'} />
-                    </ButtonBase>
+                    </ListItemButton>
                 </ListItem>
 
                 <ListItem sx={{ display: { xs: '', sm: 'none' } }}>
-                    <ButtonBase
+                    <ListItemButton
                         onClick={() => navigateTo('/category/women')}
                     >
                         <ListItemIcon>
                             <FemaleOutlined/>
                         </ListItemIcon>
                         <ListItemText primary={'Mujeres'} />
-                    </ButtonBase>
+                    </ListItemButton>
                 </ListItem>
 
                 <ListItem sx={{ display: { xs: '', sm: 'none' } }}>
-                    <ButtonBase
+                    <ListItemButton
                         onClick={() => navigateTo('/category/kids')}
                     >
                         <ListItemIcon>
                             <EscalatorWarningOutlined/>
                         </ListItemIcon>
                         <ListItemText primary={'Niños'} />
-                    </ButtonBase>
+                    </ListItemButton>
                 </ListItem>
-
-                <ListItem>
-                    <ListItemIcon>
-                        <VpnKeyOutlined/>
-                    </ListItemIcon>
-                    <ListItemText primary={'Ingresar'} />
-                </ListItem>
-
-                <ListItem>
-                    <ListItemIcon>
-                        <LoginOutlined/>
-                    </ListItemIcon>
-                    <ListItemText primary={'Salir'} />
-                </ListItem>
-
+                {
+                    isLoggedIn ? (
+                        <ListItem disablePadding>
+                            <ListItemButton
+                                onClick={ logOut }
+                            >
+                                <ListItemIcon>
+                                    <LoginOutlined/>
+                                </ListItemIcon>
+                                <ListItemText primary={'Salir'} />
+                            </ListItemButton>
+                        </ListItem>
+                    ) : (
+                        <ListItem disablePadding>
+                            <ListItemButton
+                                onClick={() => navigateTo(`/auth/login?p=${ router.asPath }`)}
+                            >
+                                <ListItemIcon>
+                                    <VpnKeyOutlined/>
+                                </ListItemIcon>
+                                <ListItemText primary={'Ingresar'} />
+                            </ListItemButton>
+                        </ListItem>
+                    )
+                }
 
                 {/* Admin */}
-                <Divider />
-                <ListSubheader>Admin Panel</ListSubheader>
+                {
+                    user?.role === 'admin' && 
+                    (
+                        <>
+                            <Divider />
+                            <ListSubheader>Admin Panel</ListSubheader>
 
-                <ListItem>
-                    <ListItemIcon>
-                        <CategoryOutlined/>
-                    </ListItemIcon>
-                    <ListItemText primary={'Productos'} />
-                </ListItem>
-                <ListItem>
-                    <ListItemIcon>
-                        <ConfirmationNumberOutlined/>
-                    </ListItemIcon>
-                    <ListItemText primary={'Ordenes'} />
-                </ListItem>
+                            <ListItem disablePadding>
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        <CategoryOutlined/>
+                                    </ListItemIcon>
+                                    <ListItemText primary={'Productos'} />
+                                </ListItemButton>
+                            </ListItem>
 
-                <ListItem>
-                    <ListItemIcon>
-                        <AdminPanelSettings/>
-                    </ListItemIcon>
-                    <ListItemText primary={'Usuarios'} />
-                </ListItem>
+                            <ListItem disablePadding>
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        <ConfirmationNumberOutlined/>
+                                    </ListItemIcon>
+                                    <ListItemText primary={'Ordenes'} />
+                                </ListItemButton>
+                            </ListItem>
+
+                            <ListItem disablePadding>
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        <AdminPanelSettings/>
+                                    </ListItemIcon>
+                                    <ListItemText primary={'Usuarios'} />
+                                </ListItemButton>
+                            </ListItem>
+                        </>
+                    )
+                }
+                
             </List>
         </Box>
     </Drawer>

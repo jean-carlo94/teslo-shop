@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
+
 import { Box, Button, Chip, Grid, Link, TextField, Typography } from '@mui/material';
 import { ErrorOutline } from '@mui/icons-material';
 import { useForm } from 'react-hook-form';
@@ -8,6 +10,7 @@ import { useForm } from 'react-hook-form';
 import { AuthLayout } from '@Layouts'
 import { validations } from '@Utils';
 import { tesloApi } from '@Api';
+import { useAuth } from '@Context';
 
 
 type FormData = {
@@ -18,8 +21,11 @@ type FormData = {
 
 const RegisterPage = () => {
 
+  const { registerUser } = useAuth();
+  const router = useRouter();
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
-  const [showError, setShowError] = useState(false)
+  const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   
   const { ref: nameRef, ...nameProps } = register("name", {
     required: "El Nombre es requerido",
@@ -37,18 +43,20 @@ const RegisterPage = () => {
   });
 
   const onRegisterForm = async( {name, email, password}: FormData ) => {
+
     setShowError(false);
+    const { hasError, message } = await registerUser(name, email, password);
 
-    try {
-      const { data } = await tesloApi.post('/user/register', {name, email, password});
-      const { token, user } = data;
-
-      console.log({ token, user });
-      
-    } catch (error) {
-      setShowError(true);
+    if( hasError ){
+      setShowError( true );
+      setErrorMessage( message! );
       setTimeout(() => setShowError(false), 3000);
+      return;
     };
+
+    //TODO: Navegar a la patalla que el usuario estaba
+
+    router.replace('/');
   };
 
   return (
@@ -59,7 +67,7 @@ const RegisterPage = () => {
             <Grid item xs={12}>
               <Typography variant='h1' component='h1'>Crear Cuenta</Typography>
                 <Chip
-                  label='Ya exite un usuario con ese Email'
+                  label={errorMessage}
                   color='error'
                   icon={ <ErrorOutline /> }
                   className='fadeIn'
