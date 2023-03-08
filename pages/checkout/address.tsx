@@ -26,8 +26,9 @@ const getAddressFormCookies = ():FormData => {
 
 const AddressPage = () => {
 
-  const { updateAddress } = useCart();
+  const { updateAddress, numberOfItems, isLoaded } = useCart();
   const router = useRouter();
+
   const [selectedCountry, setSelectedCountry] = useState<string>( countries[0].code );
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
     defaultValues: getAddressFormCookies()
@@ -37,9 +38,20 @@ const AddressPage = () => {
     const cookie = Cookies.get('address') ? JSON.parse( Cookies.get('address')! ) : [];
     if( cookie.country ){
       setSelectedCountry( cookie.country );
+    };
+  }, []);
+
+  useEffect(() => {
+    if( isLoaded && numberOfItems === 0 ){
+      router.replace('/cart/empty');
     }
-  }, [])
+  }, [ isLoaded, numberOfItems, router ]);
   
+  if( !isLoaded || numberOfItems === 0){
+    return( 
+      <></>
+    );
+  };
 
   const { ref: firstNameRef, ...firstNameProps } = register("firstName", {
     required: "El nombre es requerido",

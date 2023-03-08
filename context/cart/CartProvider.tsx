@@ -41,7 +41,7 @@ const [state, dispatch] = useReducer( cartReducer, CART_INITIAL_STATE);
 
 useEffect(() => {
     try {
-        const cookieProducts = Cookie.get('cart') ? JSON.parse( Cookie.get('cart')! ) : [];
+        const cookieProducts = Cookie.get('cart') ? JSON.parse( Cookie.get('cart')! ) : [];        
         dispatch({ type: '[Cart] - LoadCart From Cookies | Storage', payload: cookieProducts });
     } catch (error) {
         dispatch({ type: '[Cart] - LoadCart From Cookies | Storage', payload: [] });
@@ -50,7 +50,6 @@ useEffect(() => {
 
 useEffect(() => {
     if( Cookie.get('address') ){
-
         try {
             const cookieAddress = Cookie.get('address') ? JSON.parse( Cookie.get('address')! ) : [];
             dispatch({ type:'[Cart] - LoadAddress from Cookies', payload: cookieAddress });
@@ -60,28 +59,29 @@ useEffect(() => {
     };
 }, []);
 
-useEffect(() => {
-    if(state.cart!.length >= 1){
+useEffect(() => {    
+    if( state.isLoaded ){
         Cookie.set('cart', JSON.stringify( state.cart ));
-    }
+    };
+// eslint-disable-next-line react-hooks/exhaustive-deps
 }, [state.cart]);
 
 useEffect(() => {
-    if(state.cart!.length >= 1){
-
+    
+    if( state.isLoaded ){
         const numberOfItems = state.cart!.reduce(( prev, current ) => current.quantity + prev, 0);
         const subTotal = state.cart!.reduce(( prev, current ) => (current.price * current.quantity) + prev, 0);
         const taxRate = Number(process.env.NEXT_PUBLIC_TAX_RATE || 0);
-
+        
         const orderSummary = {
             numberOfItems,
             subTotal,
             tax: subTotal * taxRate,
             total: subTotal * ( taxRate + 1 )
         };
-
-        dispatch({ type:'[Cart] - Update Order Summary', payload: orderSummary })        
-    }
+        dispatch({ type:'[Cart] - Update Order Summary', payload: orderSummary });
+    };
+// eslint-disable-next-line react-hooks/exhaustive-deps
 }, [state.cart]);
 
 const addProductToCart = ( product: ICartProduct ) => {
@@ -100,6 +100,7 @@ const addProductToCart = ( product: ICartProduct ) => {
         p.quantity += product.quantity;
         return p;
     });
+    
     dispatch({ type: '[Cart] - Update Products In Cart', payload: updateProducts });
 };
 

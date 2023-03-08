@@ -28,7 +28,7 @@ const LoginPage = () => {
 
   const { ref: passRef, ...passProps } = register("password", {
     required: "La Contraseña es requerida",
-    minLength: { value: 6, message: 'Minimo 6 caracteres' }
+    minLength: { value: 6, message: 'Mínimo 6 caracteres' }
   });
 
   const onLoginUser = async( { email, password }:FormData ) => {
@@ -40,7 +40,6 @@ const LoginPage = () => {
     if(!isValidUser){
       setShowError(true);
       setTimeout(() => setShowError(false), 3000);
-
       return;
     }
 

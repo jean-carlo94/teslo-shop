@@ -25,7 +25,7 @@ export const cartReducer = ( state: CartState, action: CartActionType): CartStat
          return {
             ...state,
             isLoaded: true,
-            cart: [ ...action.payload ]
+            cart: [ ...action.payload ],
             };
       case '[Cart] - Update Shipping Address':
       case '[Cart] - LoadAddress from Cookies':
@@ -37,6 +37,7 @@ export const cartReducer = ( state: CartState, action: CartActionType): CartStat
       case '[Cart] - Update Products In Cart':
          return {
             ...state,
+            isLoaded: true,
             cart: [ ...action.payload]
          };
 
