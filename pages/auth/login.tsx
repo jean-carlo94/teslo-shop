@@ -7,7 +7,6 @@ import { useForm } from 'react-hook-form';
 
 import { AuthLayout } from '@Layouts';
 import { validations } from '@utils';
-import { tesloApi } from '@Api';
 import { useAuth } from '@Context';
 
 type FormData = {
@@ -45,9 +44,7 @@ const LoginPage = () => {
       return;
     }
 
-    const destination = router.query.p?.toString() || '/';
-    console.log(destination);
-    
+    const destination = router.query.p?.toString() || '/';    
     router.replace(destination);
   };
 
@@ -97,7 +94,7 @@ const LoginPage = () => {
               </Grid>
 
               <Grid item xs={12} display='flex' justifyContent='end'>
-                <NextLink href="/auth/register" passHref legacyBehavior>
+                <NextLink href={`/auth/register?p=${ router.query.p?.toString() || '/' }`} passHref legacyBehavior>
                   <Link underline='always'>
                     <Typography>¿No tienes cuenta?</Typography>
                   </Link>

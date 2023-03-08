@@ -22,6 +22,10 @@ export const isValidToken = ( token: string ):Promise<string> => {
         throw new Error('Np hay semilla de JTW - Revisar variables de entorno');
     };
 
+    if( token.length <= 10 ){
+        return Promise.reject('JWT no es valido');
+    };
+
     return new Promise( ( resolve, rejet ) => {
 
         try {
