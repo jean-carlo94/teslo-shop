@@ -19,7 +19,7 @@ const LoginPage = () => {
   const { loginUser } = useAuth();
   const router = useRouter();
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
-  const [showError, setShowError] = useState(false)
+  const [showError, setShowError] = useState(false);
   
   const { ref: emailRef, ...emailProps } = register("email", {
     required: "El Correo es requerido",

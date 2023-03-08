@@ -1,11 +1,25 @@
-import React from 'react'
+import React, { use, useMemo } from 'react'
 import NextLink from 'next/link';
 import { Box, Button, Card, CardContent, Divider, Grid, Link, Typography } from '@mui/material';
 
 import { ShopLayout } from '@Layouts';
 import { CartList, OrderSummary } from '@components/cart';
+import { useCart } from '@Context';
+import { countries } from '@Utils';
 
 const SummaryPage = () => {
+
+  const { shippingAddress, numberOfItems } = useCart();
+  
+  if( !shippingAddress ){
+    return <></>;
+  };
+
+  const { firstName, lastName, city, zip, address, address2, country, phone} = shippingAddress;
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const nameCountry = useMemo(() => countries.filter( countryF => countryF.code === country ), [country]);
+
     return (
         <ShopLayout title='Resumen de Compra' pageDescription={'Resumen de Compra'}>
           <Typography variant='h1' component='h1'>Resumen de la compra</Typography>
@@ -17,28 +31,39 @@ const SummaryPage = () => {
             <Grid item xs={ 12 } sm={ 5 }>
               <Card className="summary-card">
                 <CardContent>
-                  <Typography variant='h2'>Resumen (3 productos)</Typography>
+                  <Typography variant='h2'>Resumen: ({numberOfItems!} {numberOfItems! > 1 ? `Productos` : `Producto`})</Typography>
                   <Divider sx={{ my:1 }} />
 
                   <Box display='flex' justifyContent='end'>
                     <NextLink href={'/checkout/address'} passHref legacyBehavior>
-                      <Link underline='always'>Editar</Link>
+                      <Link underline='always'>
+                        <Typography>Editar</Typography>
+                      </Link>
                     </NextLink>
                   </Box>
 
-                  <Typography variant='subtitle1'>Direccion de entrega</Typography>
-                  <Typography>Jean Carlo Urrego</Typography>
-                  <Typography>Socha tal</Typography>
-                  <Typography>Stile, has 132</Typography>
-                  <Typography>Colombia</Typography>
-                  <Typography>3504134315</Typography>
+                  <Typography variant='subtitle1'>Dirección de entrega:</Typography>
+                  <Typography>{ firstName } { lastName }</Typography>
+                  <Typography>{ address }</Typography>
+                  {
+                    address2 && (
+                      <Typography>{ address2 }</Typography>
+                    )
+                  }
+                  <Typography>{ city }, { zip }</Typography>
+                  
+                  <Typography>{ nameCountry[0].name }</Typography>
+                  <Typography>{ phone }</Typography>
 
                   <Divider sx={{ my:1 }} />
                   <Box display='flex' justifyContent='end'>
                     <NextLink href={'/cart'} passHref legacyBehavior>
-                      <Link underline='always'>Editar</Link>
+                      <Link underline='always'>
+                        <Typography>Editar</Typography>
+                      </Link>
                     </NextLink>
                   </Box>
+
                   <OrderSummary />
  
                   <Box sx={{ mt: 3 }}>
