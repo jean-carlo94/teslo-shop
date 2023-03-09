@@ -1,4 +1,5 @@
-import React, { use, useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
+import { useRouter } from 'next/router';
 import NextLink from 'next/link';
 import { Box, Button, Card, CardContent, Divider, Grid, Link, Typography } from '@mui/material';
 
@@ -9,8 +10,16 @@ import { countries } from '@Utils';
 
 const SummaryPage = () => {
 
+  const router = useRouter();
   const { shippingAddress, numberOfItems } = useCart();
   
+  useEffect(() => {
+    if( !shippingAddress ){
+      router.replace('/cart/empty');
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shippingAddress]);
+
   if( !shippingAddress ){
     return <></>;
   };
@@ -57,7 +66,7 @@ const SummaryPage = () => {
 
                   <Divider sx={{ my:1 }} />
                   <Box display='flex' justifyContent='end'>
-                    <NextLink href={'/cart'} passHref legacyBehavior>
+                    <NextLink href={'/cart?p=summary'} passHref legacyBehavior>
                       <Link underline='always'>
                         <Typography>Editar</Typography>
                       </Link>

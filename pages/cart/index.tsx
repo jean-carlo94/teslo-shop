@@ -24,6 +24,11 @@ const CartPage = () => {
     );
   };
 
+  const checkOutOnClick = () => {
+    const { p = 'address' } = router.query;    
+    router.push(`/checkout/${p}`);
+  };
+
   return (
     <ShopLayout title='Carrito - Checkout' pageDescription={'Carrito de compras de la tienda'}>
       <Typography variant='h1' component='h1'>Carrito</Typography>
@@ -41,7 +46,7 @@ const CartPage = () => {
               <OrderSummary />
 
               <Box sx={{ mt: 3 }}>
-                <Button color='secondary' className='circular-btn' fullWidth href={'/checkout/address'}>
+                <Button color='secondary' className='circular-btn' fullWidth onClick={ checkOutOnClick }>
                   Checkout
                 </Button>
               </Box>
