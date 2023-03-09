@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
+import { GetServerSideProps } from 'next';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
+import { getSession, signIn } from 'next-auth/react';
 
 import { Box, Button, Chip, Grid, Link, TextField, Typography } from '@mui/material';
 import { ErrorOutline } from '@mui/icons-material';
@@ -53,9 +55,11 @@ const RegisterPage = () => {
       setTimeout(() => setShowError(false), 3000);
       return;
     };
+    // Método Manual
+    // const destination = router.query.p?.toString() || '/';    
+    // router.replace(destination);
 
-    const destination = router.query.p?.toString() || '/';    
-    router.replace(destination);
+    await signIn('credentials', { email, password });
   };
 
   return (
@@ -127,7 +131,25 @@ const RegisterPage = () => {
         </Box>
       </form>
     </AuthLayout>
-  )
-}
+  );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({ req, query}) => {
+  const session = await getSession({ req }); // your fetch function here 
+  const { p = '/'  } = query;
+
+  if( session ){
+    return{
+      redirect:{
+        destination: p.toString(),
+        permanent: false,
+      }
+    };
+  };
+
+  return {
+    props: {}
+  };
+};
 
 export default RegisterPage

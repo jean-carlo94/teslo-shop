@@ -7,6 +7,7 @@ import { ShopLayout } from '@Layouts';
 import { CartList, OrderSummary } from '@components/cart';
 import { useCart } from '@Context';
 import { countries } from '@Utils';
+import Cookies from 'js-cookie';
 
 const SummaryPage = () => {
 
@@ -14,11 +15,10 @@ const SummaryPage = () => {
   const { shippingAddress, numberOfItems } = useCart();
   
   useEffect(() => {
-    if( !shippingAddress ){
-      router.replace('/cart/empty');
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shippingAddress]);
+    if( !Cookies.get('address') ){
+      router.push('/checkout/address');
+    };
+  }, [router]);
 
   if( !shippingAddress ){
     return <></>;
