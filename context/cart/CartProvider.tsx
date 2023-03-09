@@ -1,7 +1,8 @@
 import React, { FC, useReducer, useContext, useEffect } from 'react';
-import { ICartProduct } from '@Interfaces';
+import { ICartProduct, ShippingAddress } from '@Interfaces';
 import { CartContext, cartReducer } from './';
 import Cookie from 'js-cookie'
+import { tesloApi } from '@api';
 
 export interface CartState{
     isLoaded?: boolean;
@@ -12,17 +13,6 @@ export interface CartState{
     tax?: number;
     total?: number;
     shippingAddress?: ShippingAddress;
-}
-
-export interface ShippingAddress {
-    firstName : string;
-    lastName  : string;
-    address   : string;
-    address2? : string;
-    zip       : string;
-    city      : string;
-    country   : string;
-    phone     : string;
 }
 
 const CART_INITIAL_STATE: CartState = {
@@ -106,15 +96,27 @@ const addProductToCart = ( product: ICartProduct ) => {
 
 const updateCartQuantity = ( product: ICartProduct ) => {
     dispatch({ type: '[Cart] - Change Cart Product Quantity', payload: product });
-}
+};
 
 const removeCartProduct = ( product: ICartProduct ) => {
     dispatch({ type: '[Cart] - Remove Product In Cart', payload: product  })
-}
+};
 
 const updateAddress = ( address: ShippingAddress ) => {
-    dispatch({ type:'[Cart] - Update Shipping Address', payload: address });
     Cookie.set('address', JSON.stringify( address ));
+    dispatch({ type:'[Cart] - Update Shipping Address', payload: address });
+};
+
+const createOrder = async() => {
+
+    try {
+        const { data } = await tesloApi.post('/orders');
+        console.log(data);
+        
+    } catch (error) {
+        console.log(error);
+    }
+
 }
 
 const values = { 
@@ -124,6 +126,7 @@ const values = {
     updateCartQuantity,
     removeCartProduct,
     updateAddress,
+    createOrder,
 };
 
 return (

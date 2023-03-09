@@ -30,20 +30,19 @@ const AddressPage = () => {
   const router = useRouter();
 
   const [selectedCountry, setSelectedCountry] = useState<string>( countries[0].code );
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<FormData>({
+  const { register, handleSubmit, formState: { errors },  } = useForm<FormData>({
     defaultValues: getAddressFormCookies()
   });
-
+  
   useEffect(() => {
     const cookie = Cookies.get('address') ? JSON.parse( Cookies.get('address')! ) : [];
-    reset(cookie);
     if( cookie.country ){
       setSelectedCountry( cookie.country );
     };
-  }, [reset]);
+  }, []);
 
   useEffect(() => {
-    const cartCookie = Cookies.get('cart') ? JSON.parse( Cookies.get('address')! ) : [];    
+    const cartCookie = Cookies.get('cart') ? JSON.parse( Cookies.get('cart')! ) : [];    
     if( cartCookie.length === 0 ){
       router.replace('/cart/empty');
     }

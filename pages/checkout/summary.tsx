@@ -9,10 +9,15 @@ import { useCart } from '@Context';
 import { countries } from '@Utils';
 import Cookies from 'js-cookie';
 
+const memoCountry = ( country: string ) => {
+  const nameCountry = countries.filter( countryF => countryF.code === country );
+  return nameCountry[0].name;
+};
+
 const SummaryPage = () => {
 
   const router = useRouter();
-  const { shippingAddress, numberOfItems } = useCart();
+  const { shippingAddress, numberOfItems, createOrder } = useCart();
   
   useEffect(() => {
     if( !Cookies.get('address') ){
@@ -20,14 +25,15 @@ const SummaryPage = () => {
     };
   }, [router]);
 
+  const onCreateOrder = () => {
+    createOrder();
+  };
+
   if( !shippingAddress ){
     return <></>;
   };
 
   const { firstName, lastName, city, zip, address, address2, country, phone} = shippingAddress;
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const nameCountry = useMemo(() => countries.filter( countryF => countryF.code === country ), [country]);
 
     return (
         <ShopLayout title='Resumen de Compra' pageDescription={'Resumen de Compra'}>
@@ -61,7 +67,7 @@ const SummaryPage = () => {
                   }
                   <Typography>{ city }, { zip }</Typography>
                   
-                  <Typography>{ nameCountry[0].name }</Typography>
+                  <Typography>{ memoCountry(country) }</Typography>
                   <Typography>{ phone }</Typography>
 
                   <Divider sx={{ my:1 }} />
@@ -76,7 +82,7 @@ const SummaryPage = () => {
                   <OrderSummary />
  
                   <Box sx={{ mt: 3 }}>
-                    <Button color='secondary' className='circular-btn' fullWidth>
+                    <Button color='secondary' className='circular-btn' fullWidth onClick={ onCreateOrder }>
                       Confirmar Orden
                     </Button>
                   </Box>

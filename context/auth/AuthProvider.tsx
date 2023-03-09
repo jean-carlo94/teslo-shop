@@ -28,11 +28,10 @@ export const AuthProvider: FC<AuthState> = ({ children }) => {
       
     useEffect(() => {
       if( status === 'authenticated' ){
-        //console.log({user: data?.user});
         dispatch({ type:'[AUTH] - LogIn', payload: data?.user as IUser });
       };
     }, [ status, data ]);
-    
+    //Effect Antiguo
     // useEffect(() => {
     //     checkToken();
     // }, []);
@@ -62,7 +61,6 @@ export const AuthProvider: FC<AuthState> = ({ children }) => {
 
             Cookies.set('token', token);
             dispatch({type: '[AUTH] - LogIn', payload: user});
-
             return true;
         } catch (error) {
             return false;
