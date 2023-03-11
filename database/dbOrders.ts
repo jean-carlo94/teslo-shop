@@ -20,10 +20,10 @@ export const getOrderById = async( id: string ):Promise<IOrder | null> => {
     return JSON.parse(JSON.stringify(order));
 };
 
-export const getOrdersForUser = async( idUser: string ):Promise<IOrder[] | null> => {
+export const getOrdersByUser = async( idUser: string ):Promise<IOrder[] | null> => {
 
     if( !isValidObjectId(idUser) ){
-        return null;
+        return [];
     };
 
     await db.connect();

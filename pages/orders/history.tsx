@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { GetServerSideProps, NextPage } from 'next';
 import NextLink from 'next/link';
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
@@ -32,7 +32,7 @@ const columns: GridColDef[] = [
     sortable: false,
     renderCell: ( params:GridRenderCellParams ) => {
       return (
-        <NextLink href={`/orders/${ params.row.url }`} passHref legacyBehavior>
+        <NextLink href={`/orders/${ params.row.orderId }`} passHref legacyBehavior>
           <Link underline='always'>
             <Typography> Ver Orden </Typography>
           </Link>
@@ -46,7 +46,7 @@ const setRows = ( ordersArr:OrderTable[] ) => {
 
   return ordersArr.map((orderRow, index)=> ({
       id: index + 1,
-      url: orderRow._id,
+      orderId: orderRow._id,
       paid: orderRow.isPaid,
       fullName: `${orderRow.shippingAddress.firstName} ${orderRow.shippingAddress.lastName}`
     })
@@ -62,13 +62,13 @@ interface Props {
 };
 
 const HistoryPage:NextPage<Props> = ({ orders } ) => {
-  const rows = setRows(orders);
+  const rows = useMemo(() => setRows(orders), [orders]);
 
   return (
     <ShopLayout title={'Historial de ordenes'} pageDescription={'Historial de ordenes del cliente'}>
       <Typography variant='h1' component={'h1'}>Historial de ordenes</Typography>
 
-      <Grid container>
+      <Grid container className="fadeIn">
         <Grid item xs={12} sx={{ height:650, width: '100%' }}>
           <DataGrid 
             rows={ rows }
@@ -96,7 +96,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     };
   };
 
-  const orders = await dbOrders.getOrdersForUser( session.user._id );
+  const orders = await dbOrders.getOrdersByUser( session.user._id );
 
   return {
     props: {
