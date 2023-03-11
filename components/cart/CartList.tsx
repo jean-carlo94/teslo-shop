@@ -4,25 +4,28 @@ import { Box, Button, CardActionArea, CardMedia, Grid, Link, Typography } from '
 
 import { ItemCounter } from '@components/ui';
 import { useCart } from '@Context';
-import { ICartProduct } from '@Interfaces';
+import { ICartProduct, IOrderItem } from '@Interfaces';
 
 interface Props {
   editable: boolean;
+  products?: IOrderItem[];
 }
 
-export const CartList:FC<Props> = ({ editable }) => {
+export const CartList:FC<Props> = ({ editable , products: products}) => {
 
   const { cart, updateCartQuantity, removeCartProduct } = useCart();
 
   const onNewCartQuantityValue = ( product: ICartProduct, newQuantityValue: number ) => {
     product.quantity = newQuantityValue;
     updateCartQuantity( product );
-  }
+  };
+
+  const productsToShow = products || cart;
 
   return (
     <>
         {
-            cart!.map(product => (
+            productsToShow!.map(product => (
                 <Grid container spacing={2} key={ product.slug + product.size } sx={{ mb:1 }}>
 
                   <Grid item xs={3}>
@@ -50,7 +53,7 @@ export const CartList:FC<Props> = ({ editable }) => {
                             <ItemCounter
                               currenValue={ product.quantity }
                               maxValue={ 10 }
-                              updateQuantity={ (value) => onNewCartQuantityValue( product, value )}
+                              updateQuantity={ (value) => onNewCartQuantityValue( product as ICartProduct, value )}
                             />
                           )
                         : (
@@ -65,7 +68,7 @@ export const CartList:FC<Props> = ({ editable }) => {
                     <Typography variant='subtitle1'>{ `$${ product.price }` }</Typography>
                     {/*Editable */}
                     {
-                      editable && <Button variant='text' color='secondary' onClick={ () => removeCartProduct(product)} >Remover</Button>
+                      editable && <Button variant='text' color='secondary' onClick={ () => removeCartProduct(product as ICartProduct)} >Remover</Button>
                     }
                     
                   </Grid>

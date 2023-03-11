@@ -1,3 +1,9 @@
+
+export const nameCountry = ( country: string ) => {
+    const nameCountry = countries.filter( countryF => countryF.code === country );
+    return nameCountry[0].name;
+};
+
 export const countries = [{
     name:'Costa Rica',
     code: 'CRI'

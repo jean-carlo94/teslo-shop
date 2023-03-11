@@ -69,7 +69,7 @@ export const SideMenu = () => {
                             </ListItem>
 
                             <ListItem disablePadding>
-                                <ListItemButton>
+                                <ListItemButton onClick={ () => navigateTo('/orders/history') }>
                                     <ListItemIcon>
                                         <ConfirmationNumberOutlined/>
                                     </ListItemIcon>

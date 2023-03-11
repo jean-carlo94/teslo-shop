@@ -1,11 +1,20 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { Grid, Typography } from '@mui/material';
 import { useCart } from '@context';
-import { currency } from '@utils';
+import { currency } from '@Utils';
+interface Props {
+  summaryValues?:{
+    numberOfItems: number,
+    subTotal: number,
+    total: number,
+    tax: number,
+  }
+};
 
-export const OrderSummary = () => {
+export const OrderSummary:FC<Props> = ({ summaryValues }) => {
 
   const { numberOfItems, subTotal, total, tax } = useCart();
+  const summaryValuesShow = summaryValues || { numberOfItems, subTotal, total, tax };
 
   return (
     <Grid container>
@@ -14,7 +23,7 @@ export const OrderSummary = () => {
       </Grid>
 
       <Grid item xs={6} display='flex' justifyContent='end'>
-        <Typography>{ numberOfItems } { numberOfItems! >= 1 ? 'Productos' : 'Producto'}</Typography>
+        <Typography>{ summaryValuesShow.numberOfItems } { summaryValuesShow.numberOfItems! >= 1 ? 'Productos' : 'Producto'}</Typography>
       </Grid>
 
       <Grid item xs={6}>
@@ -22,7 +31,7 @@ export const OrderSummary = () => {
       </Grid>
 
       <Grid item xs={6} display='flex' justifyContent='end'>
-        <Typography>{ currency.format(subTotal!) }</Typography>
+        <Typography>{ currency.format(summaryValuesShow.subTotal!) }</Typography>
       </Grid>
 
       <Grid item xs={6}>
@@ -30,7 +39,7 @@ export const OrderSummary = () => {
       </Grid>
 
       <Grid item xs={6} display='flex' justifyContent='end'>
-        <Typography>{ currency.format(tax!) }</Typography>
+        <Typography>{ currency.format(summaryValuesShow.tax!) }</Typography>
       </Grid>
 
       <Grid item xs={6} sx={{mt:1}}>
@@ -38,7 +47,7 @@ export const OrderSummary = () => {
       </Grid>
 
       <Grid item xs={6} display='flex' justifyContent='end'>
-        <Typography variant='subtitle1'>{ currency.format(total!) }</Typography>
+        <Typography variant='subtitle1'>{ currency.format(summaryValuesShow.total!) }</Typography>
       </Grid>
 
     </Grid>

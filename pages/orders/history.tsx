@@ -1,17 +1,21 @@
-import React from 'react';
+import React, { FC } from 'react';
+import { GetServerSideProps, NextPage } from 'next';
 import NextLink from 'next/link';
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { Chip, Grid, Link, Typography } from '@mui/material';
 
 import { ShopLayout } from '@Layouts';
+import { getSession } from 'next-auth/react';
+import { dbOrders } from '@Database';
+import { ShippingAddress } from '@Interfaces';
 
 const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID', width:100 },
-  { field: 'fullname', headerName: 'Nobre Completo', width:300 },
+  { field: 'fullName', headerName: 'Nombré Completo', width:300 },
   {
     field: 'paid',
     headerName: 'Pagada',
-    description: 'Mestra Informacion si esta pagada o no',
+    description: 'Muestra Información si esta pagada o no',
     width: 200,
     renderCell: ( params:GridRenderCellParams ) => {
       return (
@@ -28,9 +32,9 @@ const columns: GridColDef[] = [
     sortable: false,
     renderCell: ( params:GridRenderCellParams ) => {
       return (
-        <NextLink href={`/orders/${ params.row.id }`} passHref legacyBehavior>
+        <NextLink href={`/orders/${ params.row.url }`} passHref legacyBehavior>
           <Link underline='always'>
-            Ver Orden
+            <Typography> Ver Orden </Typography>
           </Link>
         </NextLink>
       )
@@ -38,17 +42,28 @@ const columns: GridColDef[] = [
   }
 ];
 
-const rows = [
-  { id:1, paid: true, fullname: 'JEan CArlo'},
-  { id:2, paid: false, fullname: 'Juean Tales'},
-  { id:3, paid: true, fullname: 'Sebastian tal'},
-  { id:4, paid: true, fullname: 'TAles mileto'},
-  { id:5, paid: false, fullname: 'marian as'},
-  { id:6, paid: true, fullname: 'alberto tal'},
-  { id:7, paid: true, fullname: 'andres tal'},
-];
+const setRows = ( ordersArr:OrderTable[] ) => {
 
-const HistoryPage = () => {
+  return ordersArr.map((orderRow, index)=> ({
+      id: index + 1,
+      url: orderRow._id,
+      paid: orderRow.isPaid,
+      fullName: `${orderRow.shippingAddress.firstName} ${orderRow.shippingAddress.lastName}`
+    })
+  );
+};
+interface OrderTable {
+    _id: string;
+    shippingAddress: ShippingAddress;
+    isPaid: false;
+};
+interface Props {
+  orders: OrderTable[];
+};
+
+const HistoryPage:NextPage<Props> = ({ orders } ) => {
+  const rows = setRows(orders);
+
   return (
     <ShopLayout title={'Historial de ordenes'} pageDescription={'Historial de ordenes del cliente'}>
       <Typography variant='h1' component={'h1'}>Historial de ordenes</Typography>
@@ -64,7 +79,30 @@ const HistoryPage = () => {
         </Grid>
       </Grid>
     </ShopLayout>
-  )
-}
+  );
+};
+
+// You should use getServerSideProps when:
+// - Only if you need to pre-render a page whose data must be fetched at request time
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const session:any = await getSession({ req });
+
+  if( !session ){
+    return {
+        redirect:{
+          destination: `/auth/login?p=/orders/history`,
+          permanent: false,
+        }
+    };
+  };
+
+  const orders = await dbOrders.getOrdersForUser( session.user._id );
+
+  return {
+    props: {
+      orders
+    }
+  };
+};
 
 export default HistoryPage

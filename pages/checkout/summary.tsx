@@ -1,32 +1,40 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
-import { Box, Button, Card, CardContent, Divider, Grid, Link, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, Chip, Divider, Grid, Link, Typography } from '@mui/material';
 
 import { ShopLayout } from '@Layouts';
 import { CartList, OrderSummary } from '@components/cart';
 import { useCart } from '@Context';
-import { countries } from '@Utils';
+import { nameCountry } from '@Utils';
 import Cookies from 'js-cookie';
-
-const memoCountry = ( country: string ) => {
-  const nameCountry = countries.filter( countryF => countryF.code === country );
-  return nameCountry[0].name;
-};
 
 const SummaryPage = () => {
 
   const router = useRouter();
   const { shippingAddress, numberOfItems, createOrder } = useCart();
   
+  const [isPosting, setIsPosting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
   useEffect(() => {
     if( !Cookies.get('address') ){
       router.push('/checkout/address');
     };
   }, [router]);
 
-  const onCreateOrder = () => {
-    createOrder();
+  const onCreateOrder = async() => {
+    setIsPosting(true);
+    
+    const { hasError, message } = await createOrder();
+
+    if( hasError ){
+      setIsPosting( false );
+      setErrorMessage( message );
+      return;
+    };
+
+    router.replace(`/orders/${ message }`);
   };
 
   if( !shippingAddress ){
@@ -67,7 +75,7 @@ const SummaryPage = () => {
                   }
                   <Typography>{ city }, { zip }</Typography>
                   
-                  <Typography>{ memoCountry(country) }</Typography>
+                  <Typography>{ nameCountry(country) }</Typography>
                   <Typography>{ phone }</Typography>
 
                   <Divider sx={{ my:1 }} />
@@ -81,12 +89,16 @@ const SummaryPage = () => {
 
                   <OrderSummary />
  
-                  <Box sx={{ mt: 3 }}>
-                    <Button color='secondary' className='circular-btn' fullWidth onClick={ onCreateOrder }>
+                  <Box sx={{ mt: 3 }} display={"flex"} flexDirection={"column"}>
+                    <Button color='secondary' className='circular-btn' fullWidth onClick={ onCreateOrder } disabled={ isPosting }>
                       Confirmar Orden
                     </Button>
-                  </Box>
-                  
+                    <Chip
+                      color="error"
+                      label={ errorMessage }
+                      sx={{ display: errorMessage ? 'flex':'none', mt: 2 }} 
+                    />
+                  </Box>                  
                 </CardContent>
               </Card>
     
