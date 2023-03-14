@@ -7,27 +7,30 @@ import { ThemeProvider } from '@mui/material'
 import { lightTheme } from '@Themes'
 import { SWRConfig } from 'swr'
 import { AuthProvider, CartProvider, UiProvider } from '@context'
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <SessionProvider>
-      <SWRConfig
-        value={{
-          /*NOTE: Intervalo de peticion OPCIONAL */
-          //refreshInterval: 500,
-          fetcher: (resource, init) => fetch(resource, init).then(res => res.json())
-        }}
-      >
-        <ComposeProvider components={[
-          AuthProvider,
-          UiProvider,
-          CartProvider,
-        ]}>
-            <ThemeProvider theme={ lightTheme }>
-              <Component {...pageProps} />
-            </ThemeProvider>
-        </ComposeProvider>
-      </SWRConfig>
+      <PayPalScriptProvider options={{ 'client-id': process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || '' }}>
+        <SWRConfig
+          value={{
+            /*NOTE: Intervalo de petición OPCIONAL */
+            //refreshInterval: 500,
+            fetcher: (resource, init) => fetch(resource, init).then(res => res.json())
+          }}
+        >
+          <ComposeProvider components={[
+            AuthProvider,
+            UiProvider,
+            CartProvider,
+          ]}>
+              <ThemeProvider theme={ lightTheme }>
+                <Component {...pageProps} />
+              </ThemeProvider>
+          </ComposeProvider>
+        </SWRConfig>
+      </PayPalScriptProvider>
     </SessionProvider>
   )
 }
