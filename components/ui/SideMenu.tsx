@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Box, Divider, Drawer, IconButton, Input, InputAdornment, List, ListItem, ListItemIcon, ListItemText, ListSubheader, ListItemButton } from "@mui/material"
-import { AccountCircleOutlined, AdminPanelSettings, CategoryOutlined, ConfirmationNumberOutlined, EscalatorWarningOutlined, FemaleOutlined, LoginOutlined, MaleOutlined, SearchOutlined, VpnKeyOutlined } from "@mui/icons-material"
+import { AccountCircleOutlined, AdminPanelSettings, CategoryOutlined, ConfirmationNumberOutlined, EscalatorWarningOutlined, FemaleOutlined, LoginOutlined, MaleOutlined, SearchOutlined, VpnKeyOutlined, DashboardOutlined } from '@mui/icons-material';
 
 import { useUi } from '@context/ui'
 import { useRouter } from 'next/router';
@@ -147,6 +147,17 @@ export const SideMenu = () => {
                             <ListSubheader>Admin Panel</ListSubheader>
 
                             <ListItem disablePadding>
+                                <ListItemButton
+                                    onClick={() => navigateTo(`/admin`)}
+                                >
+                                    <ListItemIcon>
+                                        <DashboardOutlined />
+                                    </ListItemIcon>
+                                    <ListItemText primary={'Dashboard'} />
+                                </ListItemButton>
+                            </ListItem>
+
+                            <ListItem disablePadding>
                                 <ListItemButton>
                                     <ListItemIcon>
                                         <CategoryOutlined/>
@@ -165,7 +176,9 @@ export const SideMenu = () => {
                             </ListItem>
 
                             <ListItem disablePadding>
-                                <ListItemButton>
+                                <ListItemButton
+                                    onClick={() => navigateTo(`/admin/users`)}
+                                >
                                     <ListItemIcon>
                                         <AdminPanelSettings/>
                                     </ListItemIcon>

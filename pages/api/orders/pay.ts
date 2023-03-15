@@ -49,11 +49,6 @@ const getPayPalBearerToken = async():Promise<string|null> => {
 
 const payOrder = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
 
-    //Valide Session
-    const session: any = await getSession({ req });
-    if( !session ){
-        return res.status(401).json({ message: 'Debe de estar autenticado para hacer esto' });
-    };
     //Valide body
     const { transactionId = '', orderId = '' } = req.body;
     if( transactionId.length === 0 && orderId.length === 0 ){

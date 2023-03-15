@@ -20,6 +20,7 @@
       "@Themes*": ["./themes"],
       "@Layouts*": ["./components/layouts"],
       "@Ui*": ["./components/ui"],
+      "@AdminUi*": ["./components/admin"],
       "@Interfaces*": ["./interfaces"],
       "@Models*": ["./models"],
       "@Database*": ["./database"],
