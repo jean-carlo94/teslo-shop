@@ -31,7 +31,7 @@ const RegisterPage = () => {
   
   const { ref: nameRef, ...nameProps } = register("name", {
     required: "El Nombre es requerido",
-    minLength: { value: 6, message: 'Minimo 6 caracteres' }
+    minLength: { value: 6, message: 'Mínimo 6 caracteres' }
   });
 
   const { ref: emailRef, ...emailProps } = register("email", {
@@ -41,7 +41,7 @@ const RegisterPage = () => {
 
   const { ref: passRef, ...passProps } = register("password", {
     required: "La Contraseña es requerida",
-    minLength: { value: 6, message: 'Minimo 6 caracteres' }
+    minLength: { value: 6, message: 'Mínimo 6 caracteres' }
   });
 
   const onRegisterForm = async( {name, email, password}: FormData ) => {

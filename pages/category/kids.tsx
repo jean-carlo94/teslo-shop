@@ -11,9 +11,9 @@ const KidsPage:NextPage = () => {
     const { products, isLoading } = useProducts('/products?gender=kid');
 
     return (
-        <ShopLayout title={'Teslo-Shop - Kids'} pageDescription={'Encuentra los mejores productos para Niños de Teslo aqui'}>
+        <ShopLayout title={'Teslo-Shop - Kids'} pageDescription={'Encuentra los mejores productos para Niños de Teslo aquí'}>
           <Typography variant='h1' component='h1'>Niños</Typography>
-          <Typography variant='h2' sx={{ mb:1 }}>Todos los proudctos para Niños</Typography>
+          <Typography variant='h2' sx={{ mb:1 }}>Todos los productos para Niños</Typography>
     
           {
             isLoading

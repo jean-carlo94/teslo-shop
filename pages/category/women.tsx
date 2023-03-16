@@ -11,9 +11,9 @@ const WomenPage:NextPage = () => {
     const { products, isLoading } = useProducts('/products?gender=women');
 
     return (
-        <ShopLayout title={'Teslo-Shop - Women'} pageDescription={'Encuentra los mejores productos para Mujer de Teslo aqui'}>
+        <ShopLayout title={'Teslo-Shop - Women'} pageDescription={'Encuentra los mejores productos para Mujer de Teslo aquí'}>
           <Typography variant='h1' component='h1'>Mujeres</Typography>
-          <Typography variant='h2' sx={{ mb:1 }}>Todos los proudctos para Mujer</Typography>
+          <Typography variant='h2' sx={{ mb:1 }}>Todos los productos para Mujer</Typography>
     
           {
             isLoading

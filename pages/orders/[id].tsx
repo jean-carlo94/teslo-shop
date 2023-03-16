@@ -56,7 +56,7 @@ const OrderPage: NextPage<Props> = ({ order }) => {
   };
 
     return (
-        <ShopLayout title='Resumen de Orden 123456' pageDescription={'Resumen de la Orden'}>
+        <ShopLayout title={`Resumen de Orden ${ _id }`} pageDescription={'Resumen de la Orden'}>
           <Typography variant='h1' component='h1'>Orden: { _id }</Typography>
 
           {
@@ -180,7 +180,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query }) => 
         permanent: false,
       }
     };
-  }
+  };
 
   if( order.user !== session.user._id ){
     return {
