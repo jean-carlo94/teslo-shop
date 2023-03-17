@@ -158,7 +158,9 @@ export const SideMenu = () => {
                             </ListItem>
 
                             <ListItem disablePadding>
-                                <ListItemButton>
+                                <ListItemButton
+                                    onClick={() => navigateTo(`/admin/products`)}
+                                >
                                     <ListItemIcon>
                                         <CategoryOutlined/>
                                     </ListItemIcon>
