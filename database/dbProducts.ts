@@ -1,6 +1,7 @@
 import { db } from './';
 import { Product } from '@Models';
 import { IProduct } from '@Interfaces';
+import { resolveImagesHost } from '@utils';
 
 export const getProductBySlug = async( slug:string ): Promise<IProduct | null> => {
     await db.connect();
@@ -10,9 +11,8 @@ export const getProductBySlug = async( slug:string ): Promise<IProduct | null> =
     if( !product ){
         return null;
     };   
-
-    //Todo: Procesamiento de imágenes al subir al server
-    return JSON.parse( JSON.stringify( product ) );
+    
+    return JSON.parse( JSON.stringify( resolveImagesHost(product) ) );
 }
 
 interface ProductSlug{
@@ -38,10 +38,13 @@ export const getProductBySTerm = async( term:string ): Promise<IProduct[]> => {
     })
     .select('title images price inStock slug -_id')
     .lean();
-
     await db.disconnect();
 
-    return JSON.parse( JSON.stringify( products ) );
+    const productsImagesOK = products.map( product => {
+        return resolveImagesHost(product);
+    });
+
+    return JSON.parse( JSON.stringify( productsImagesOK ) );
 }
 
 export const getAllProducts = async(): Promise<IProduct[]> => {
@@ -52,5 +55,9 @@ export const getAllProducts = async(): Promise<IProduct[]> => {
                                     .lean();
     await db.disconnect();
 
-    return JSON.parse( JSON.stringify( products ) );
+    const productsImagesOK = products.map( product => {
+        return resolveImagesHost(product);
+    });
+
+    return JSON.parse( JSON.stringify( productsImagesOK ) );
 }

@@ -2,6 +2,9 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import formidable from 'formidable';
 import fs from 'fs'
 
+import { v2 as cloudinary } from 'cloudinary'
+cloudinary.config( process.env.CLOUDINARY_URL || '' ); 
+
 type Data = {
     message: string
 };
@@ -23,27 +26,40 @@ export default function handle (req: NextApiRequest, res: NextApiResponse<Data>)
     };
 };
 
-const saveFile = async( file: formidable.File) => {
+const saveFile = async( file: formidable.File): Promise<string> => {
+    //TODO: METODO MANUAL (No recomendado).
+    /*
     const data = fs.readFileSync( file.filepath );
     fs.writeFileSync(`./public/${ file.originalFilename }`, data);
     fs.unlinkSync( file.filepath ) //Elimina el Buffer
-
     return;
+    */
+
+    //TODO: Cloudinary
+
+    try {
+        const { secure_url } = await cloudinary.uploader.upload( file.filepath, {folder : "TesloShop"} );
+        return secure_url;
+    } catch (error) {
+        console.log(error);
+        throw new Error('Hubo un error en Cloudinary');
+    };
+    
 };
 
-const parserFiles = async(req: NextApiRequest) => {
+const parserFiles = async(req: NextApiRequest): Promise<string> => {
     return new Promise( ( resolve, reject ) => {
 
         const form = new formidable.IncomingForm();
 
         form.parse( req, async( err, fields, files ) => {
-                        
+
             if( err ){
                 return reject(err);
             };
 
-            await saveFile( files.file as formidable.File );
-            resolve(true);
+            const filepath = await saveFile( files.file as formidable.File );
+            resolve(filepath);
         });
 
     });
@@ -52,8 +68,8 @@ const parserFiles = async(req: NextApiRequest) => {
 const UploadFile = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
     
     try {
-        await parserFiles(req);
-        return res.status(200).json({ message: 'imagen subida' });
+        const imageUrl = await parserFiles(req);
+        return res.status(200).json({ message: imageUrl });
 
     } catch (error) {
         console.log(error);
@@ -61,5 +77,4 @@ const UploadFile = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
     };
 
 };
-
 

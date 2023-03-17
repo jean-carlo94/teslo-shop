@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { IProduct } from '@Interfaces';
 import { db } from '@Database';
 import { Product } from '@Models';
+import { resolveImagesHost } from '@utils';
 
 type Data = 
     | { message: string }
@@ -32,6 +33,6 @@ const getProductBySlug = async(req: NextApiRequest, res: NextApiResponse<Data>) 
         });
     };
 
-    return res.status(200).json(product);
+    return res.status(200).json( resolveImagesHost(product) );
     
 }

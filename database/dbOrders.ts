@@ -17,6 +17,10 @@ export const getOrderById = async( id: string ):Promise<IOrder | null> => {
         return null;
     };
 
+    order.orderItems.map( item => {
+        return item.image = item.image.includes('http') ? item.image : `${ process.env.HOST_NAME }/products/${ item.image }`;
+    });
+
     return JSON.parse(JSON.stringify(order));
 };
 

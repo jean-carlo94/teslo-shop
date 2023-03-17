@@ -14,8 +14,8 @@ export const ProductCard: FC<Props> = ({product}) => {
 
     const productImage = useMemo(() => {
         return isHovered
-        ? `/products/${ product.images[1] }`
-        : `/products/${ product.images[0] }`
+        ? product.images[1]
+        : product.images[0]
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isHovered])
 

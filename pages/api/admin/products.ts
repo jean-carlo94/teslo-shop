@@ -3,6 +3,11 @@ import { IProduct } from '@Interfaces';
 import { db } from '@database';
 import { Product } from '@models';
 import { isValidObjectId } from 'mongoose';
+import { resolveImagesHost } from '@utils';
+
+
+import { v2 as cloudinary } from 'cloudinary'
+cloudinary.config( process.env.CLOUDINARY_URL || '' ); 
 
 type Data = 
 |{ message: string }
@@ -34,8 +39,11 @@ const getProducts = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
                                 .lean();
         await db.disconnect();
 
-        //TODO: Tendremos que actualizar las imágenes.
-        return res.status(200).json( products );
+        const productsImagesOK = products.map( product => {
+            return resolveImagesHost(product);
+        });    
+
+        return res.status(200).json( productsImagesOK );
 
     } catch (error) {
         console.log(error);
@@ -66,7 +74,15 @@ const updateProduct =  async(req: NextApiRequest, res: NextApiResponse<Data>) =>
             return res.status(400).json({ message: 'No existe un producto con ese ID' });
         };
 
-        //TODO: eliminar fotos en Cloudinary
+        product.images.forEach( async(image) =>{
+            if( !images.includes(image) ){
+                const [ fileId, extension ] = image.substring( image.lastIndexOf('/')+1 ).split('.');
+                const destroy = await cloudinary.uploader.destroy( `TesloShop/${fileId}` );
+
+                console.log(destroy);
+            };
+        });
+
         await product.update( req.body );
         await db.disconnect();
 
