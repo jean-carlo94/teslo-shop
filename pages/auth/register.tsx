@@ -11,7 +11,7 @@ import { useForm } from 'react-hook-form';
 
 import { AuthLayout } from '@Layouts'
 import { validations } from '@Utils';
-import { tesloApi } from '@Api';
+import { tesloApi } from '@axiosApi';
 import { useAuth } from '@Context';
 
 

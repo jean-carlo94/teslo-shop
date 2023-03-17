@@ -6,7 +6,7 @@ import { AdminLayout } from '@Layouts';
 import { PeopleOutline } from '@mui/icons-material';
 import useSWR from 'swr';
 import { IUser } from '@Interfaces';
-import { tesloApi } from '@api';
+import { tesloApi } from '@axiosApi';
 
 
 const UsersPage = () => {

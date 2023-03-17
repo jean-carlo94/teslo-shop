@@ -28,7 +28,7 @@
       "@Hooks*": ["./hooks"],
       "@Context*": ["./context"],
       "@Utils*": ["./utils"],
-      "@Api*": ["./api"],
+      "@Api*": ["axiosApi"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

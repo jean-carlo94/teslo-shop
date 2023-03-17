@@ -11,7 +11,7 @@ import { getSession } from 'next-auth/react';
 import { dbOrders } from '@database';
 import { IOrder } from '@Interfaces';
 import { nameCountry } from '@utils';
-import { tesloApi } from '@api';
+import { tesloApi } from '@axiosApi';
 
 export type OrderResponseBody = {
   id: string;

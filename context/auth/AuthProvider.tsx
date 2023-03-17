@@ -5,7 +5,7 @@ import { IUser } from '@interfaces';
 import { AuthContext, authReducer } from './';
 import Cookies from 'js-cookie';
 
-import { tesloApi } from '@Api';
+import { tesloApi } from '@axiosApi';
 import axios from 'axios';
 import Cookie from 'js-cookie'
 
