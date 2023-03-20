@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import formidable from 'formidable';
-import fs from 'fs'
+//import fs from 'fs'
 
 import { v2 as cloudinary } from 'cloudinary'
 cloudinary.config( process.env.CLOUDINARY_URL || '' ); 
@@ -42,9 +42,8 @@ const saveFile = async( file: formidable.File): Promise<string> => {
         return secure_url;
     } catch (error) {
         console.log(error);
-        throw new Error('Hubo un error en Cloudinary');
+        return "";
     };
-    
 };
 
 const parserFiles = async(req: NextApiRequest): Promise<string> => {

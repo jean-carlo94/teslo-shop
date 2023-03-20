@@ -13,11 +13,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
         case 'GET':
             return getSearchProducts( req, res);    
         default:
-            return res.status(400).json({
-                message: 'Bad request'
-            })
+            return res.status(400).json({ message: 'Bad request' });
     };
-}
+};
 
 const getSearchProducts = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     let { q = '' } = req.query;
@@ -30,11 +28,17 @@ const getSearchProducts = async (req: NextApiRequest, res: NextApiResponse<Data>
 
     q = q.toString().toLowerCase();
 
-    await db.connect();
-    const products = await Product.find({
-        $text: { $search: q }
-    }).select('slug title images price inStock -_id').lean();
-    await db.disconnect();
+    try {
+        await db.connect();
+        const products = await Product.find({
+            $text: { $search: q }
+        }).select('slug title images price inStock -_id').lean();
+        await db.disconnect();
 
-    return res.status(200).json(products);
-}
+        return res.status(200).json(products);
+    } catch (error) {
+        await db.disconnect();
+        console.log(error);
+        return res.status(500).json({ message: "error en Data" });
+    };  
+};

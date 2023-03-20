@@ -13,9 +13,7 @@ export default function handler (req: NextApiRequest, res: NextApiResponse<Data>
         case 'GET':
             return getProductBySlug( req, res);    
         default:
-            return res.status(400).json({
-                message: 'Bad request'
-            })
+            return res.status(400).json({ message: 'Bad request'});
     };
 }
 
@@ -23,16 +21,21 @@ const getProductBySlug = async(req: NextApiRequest, res: NextApiResponse<Data>) 
     
     const { slug } = req.query;
 
-    await db.connect();
-    const product = await Product.findOne({ slug }).lean();
-    await db.disconnect();
+    try {
+        await db.connect();
+        const product = await Product.findOne({ slug }).lean();
+        await db.disconnect();
 
-    if( !product){
-        return res.status(404).json({
-            message: 'Producto no encontrado'
-        });
+        if( !product){
+            return res.status(404).json({
+                message: 'Producto no encontrado'
+            });
+        };
+
+        return res.status(200).json( resolveImagesHost(product) );
+    } catch (error) {
+        await db.disconnect();
+        console.log(error);
+        return res.status(500).json({ message: "error en Data" });
     };
-
-    return res.status(200).json( resolveImagesHost(product) );
-    
-}
+};

@@ -64,8 +64,6 @@ const createOrder = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
         await db.disconnect();
         console.log(error);
 
-        res.status(400).json({
-            message: error.message || 'Revise logs del servidor'
-        });
+        res.status(400).json({ message: error.message || 'Revise logs del servidor' });
     };
-}
+};

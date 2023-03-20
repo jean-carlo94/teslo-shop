@@ -27,3 +27,6 @@ Llamara:
 ```
 http://localhost:3000/api/seed
 ```
+
+Curso:
+https://github.com/Klerith/next-teslo/tree/fin-seccion-22

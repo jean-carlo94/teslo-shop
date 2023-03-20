@@ -4,60 +4,86 @@ import { IProduct } from '@Interfaces';
 import { resolveImagesHost } from '@utils';
 
 export const getProductBySlug = async( slug:string ): Promise<IProduct | null> => {
-    await db.connect();
-    const product = await Product.findOne({ slug }).lean();
-    await db.disconnect();
 
-    if( !product ){
+    try {
+        await db.connect();
+        const product = await Product.findOne({ slug }).lean();
+        await db.disconnect();
+
+        if( !product ){
+            throw new Error(`${slug} - No existe producto`);
+        };   
+        
+        return JSON.parse( JSON.stringify( resolveImagesHost(product) ) );
+    } catch (error) {
+        await db.disconnect();
+        console.log(error);
         return null;
-    };   
-    
-    return JSON.parse( JSON.stringify( resolveImagesHost(product) ) );
-}
+    };  
+};
 
 interface ProductSlug{
     slug: string;
 }
 
 export const getAllProductsSlugs = async(): Promise<ProductSlug[]> => {
-    await db.connect();
-    const slugs = await Product.find().select('slug -_id').lean();
-    await db.disconnect();
 
-    return slugs;
-}
+    try {
+        await db.connect();
+        const slugs = await Product.find().select('slug -_id').lean();
+        await db.disconnect();
+        
+        return slugs;
+
+    } catch (error) {
+        await db.disconnect();
+        console.log(error);
+        return [];
+    };
+};
 
 export const getProductBySTerm = async( term:string ): Promise<IProduct[]> => {
 
     term = term.toString().toLowerCase();
+   
+    try {
+        await db.connect();
+        const products = await Product.find({ $text: { $search: term } })
+                                        .select('title images price inStock slug -_id')
+                                        .lean();
+        await db.disconnect();
 
-    await db.connect();
+        const productsImagesOK = products.map( product => {
+            return resolveImagesHost(product);
+        });
 
-    const products = await Product.find({
-        $text: { $search: term } 
-    })
-    .select('title images price inStock slug -_id')
-    .lean();
-    await db.disconnect();
-
-    const productsImagesOK = products.map( product => {
-        return resolveImagesHost(product);
-    });
-
-    return JSON.parse( JSON.stringify( productsImagesOK ) );
-}
+        return JSON.parse( JSON.stringify( productsImagesOK ) );
+        
+    } catch (error) {
+        await db.disconnect();
+        console.log(error);
+        return JSON.parse( JSON.stringify( [] ) );
+    };    
+};
 
 export const getAllProducts = async(): Promise<IProduct[]> => {
 
-    await db.connect();
-    const products = await Product.find()
-                                    .select('slug title images price inStock -_id')
-                                    .lean();
-    await db.disconnect();
+    try {
+        await db.connect();
+        const products = await Product.find()
+                                        .select('slug title images price inStock -_id')
+                                        .lean();
+        await db.disconnect();
 
-    const productsImagesOK = products.map( product => {
-        return resolveImagesHost(product);
-    });
+        const productsImagesOK = products.map( product => {
+            return resolveImagesHost(product);
+        });
 
-    return JSON.parse( JSON.stringify( productsImagesOK ) );
+        return JSON.parse( JSON.stringify( productsImagesOK ) );
+    } catch (error) {
+        await db.disconnect();
+        console.log(error);
+        return JSON.parse( JSON.stringify( [] ) );
+    }
+    
 }

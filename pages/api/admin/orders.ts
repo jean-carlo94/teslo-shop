@@ -30,6 +30,7 @@ const getOrders =  async(req: NextApiRequest, res: NextApiResponse<Data>) => {
 
         return res.status(200).json( orders );
     } catch (error) {
+        await db.disconnect();
         return res.status(500).json({ message: 'Error Data' }); 
     };
 

@@ -101,6 +101,8 @@ const payOrder = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
         return res.status(200).json({ message: 'Orden Pagada' });
 
     } catch (error) {
+        await db.disconnect();
+
         if( axios.isAxiosError(error) ){
             console.log('Axios Error');
             console.log(error.response?.data);

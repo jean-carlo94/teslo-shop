@@ -3,7 +3,6 @@ import { db } from '@Database';
 import { User } from '@models';
 import { IUser } from '@interfaces';
 import { isValidObjectId } from 'mongoose';
-import { getSession } from 'next-auth/react';
 
 type Data = 
 | { message: string }
@@ -25,11 +24,16 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
 
 const getUsers = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
 
-    await db.connect();
-    const users = await User.find().select('-password').lean();
-    await db.disconnect();
+    try {
+        await db.connect();
+        const users = await User.find().select('-password').lean();
+        await db.disconnect();
 
-    return res.status(200).json( users );
+        return res.status(200).json( users );
+    } catch (error) {
+        await db.disconnect();
+        console.log(error);
+    };
 };
 
 
@@ -65,8 +69,7 @@ const updateUser = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
     } catch (error) {
         await db.disconnect();
         console.log(error);
-    }
-    
+    };
 };
 
 
