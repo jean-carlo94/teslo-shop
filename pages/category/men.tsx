@@ -2,13 +2,13 @@ import type { NextPage } from 'next';
 import { Typography } from '@mui/material';
 
 import { ShopLayout } from '@Layouts';
-import { useProducts } from '@Hooks';
+import { useProductsStore } from '@Hooks';
 import { ProductList } from '@components/products';
 import { FullScreenLoading } from '@components/ui';
 
 const MenPage:NextPage = () => {
     
-    const { products, isLoading } = useProducts('/products?gender=men');
+    const { products, isLoading } = useProductsStore('/products?gender=men');
 
     return (
         <ShopLayout title={'Teslo-Shop - Men'} pageDescription={'Encuentra los mejores productos para Hombre de Teslo aquí'}>

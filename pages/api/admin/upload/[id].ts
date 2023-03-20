@@ -6,7 +6,7 @@ type Data = {
     message: string
 }
 
-export default function (req: NextApiRequest, res: NextApiResponse<Data>) {
+export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
     switch ( req.method ) {
         case 'DELETE':
             return DeleteFile( req, res );
