@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import useSWR from 'swr';
 import NextLink from 'next/link';
 import { Box, Button, CardMedia, Grid, Link} from '@mui/material';
 import { AddOutlined, CategoryOutlined } from '@mui/icons-material';
@@ -6,6 +7,7 @@ import { AddOutlined, CategoryOutlined } from '@mui/icons-material';
 import { AdminLayout } from '@Layouts';
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { useProducts } from '@context';
+import { IProduct } from '@interfaces';
 
 const columns: GridColDef[] = [
     { 
@@ -47,7 +49,14 @@ const columns: GridColDef[] = [
 
 const ProductsPage = () => {
 
-    const { products } = useProducts();
+    const { products, setProducts } = useProducts();
+    const { data, error } = useSWR<IProduct[]>('/api/admin/products');
+
+    useEffect(() => {
+        if(data){
+            setProducts(data);
+        };
+    }, [data]);
 
     const rows = products!.map( product=> ({
         id: product._id,

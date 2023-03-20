@@ -5,7 +5,7 @@ interface ContextProps{
     //States
     products?: IProduct[];
     //Metrhos
-    setProduct: (product: IProduct) => void;
+    setProducts: (products: IProduct[]) => void;
 };
 
 export const ProductsContext = createContext({} as ContextProps);

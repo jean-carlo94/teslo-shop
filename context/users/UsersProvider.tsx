@@ -1,7 +1,6 @@
-import React, { FC, useReducer, useContext, useEffect } from 'react';
+import React, { FC, useReducer, useContext } from 'react';
 import { UsersContext, usersReducer } from './';
 import { IUser } from '@Interfaces';
-import useSWR from 'swr';
 import { tesloApi } from '@axiosApi';
 
 export interface UsersState{
@@ -16,13 +15,6 @@ const USERS_INITIAL_STATE: UsersState = {
 export const UsersProvider: FC<UsersState> = ({ children }) => {
 
     const [state, dispatch] = useReducer(usersReducer, USERS_INITIAL_STATE);
-    const { data, error } = useSWR<IUser[]>('/api/admin/users');
-
-    useEffect(() => {
-        if(data){
-          setUsers(data);
-        }
-    }, [data]);
 
     const setUsers = ( users:IUser[] ) => {
         dispatch({ type: '[Users] - LoadUsers', payload: users });
@@ -49,6 +41,7 @@ export const UsersProvider: FC<UsersState> = ({ children }) => {
         // States
         ...state,
         // Methods
+        setUsers,
         onRoleUpdated,
     };
 

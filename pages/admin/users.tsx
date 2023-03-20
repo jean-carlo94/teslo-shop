@@ -1,14 +1,23 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import useSWR from 'swr';
 import { Grid, MenuItem, Select } from '@mui/material';
 import { DataGrid, GridColDef, GridRenderCellParams  } from '@mui/x-data-grid';
 
 import { AdminLayout } from '@Layouts';
 import { PeopleOutline } from '@mui/icons-material';
 import { useUsers } from '@context';
+import { IUser } from '@interfaces';
 
 const UsersPage = () => {
 
-    const { users, onRoleUpdated } = useUsers();
+    const { users, onRoleUpdated, setUsers } = useUsers();
+    const { data, error } = useSWR<IUser[]>('/api/admin/users');
+
+    useEffect(() => {
+        if(data){
+          setUsers(data);
+        }
+    }, [data]);
 
     const columns: GridColDef[] = [
         { field: 'email', headerName: 'correo', width: 300},
@@ -60,7 +69,7 @@ const UsersPage = () => {
         </Grid>
 
     </AdminLayout>
-  )
-}
+  );
+};
 
-export default UsersPage
+export default UsersPage;

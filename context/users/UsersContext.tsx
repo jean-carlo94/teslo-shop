@@ -5,6 +5,7 @@ interface ContextProps{
     //States
     users?: IUser[];
     //Metrhos
+    setUsers: (users: IUser[]) => void;
     onRoleUpdated: (userId: string, newRole: string) => Promise<void>;
 };
 
