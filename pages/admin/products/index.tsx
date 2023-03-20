@@ -1,12 +1,11 @@
 import React from 'react'
-import useSWR from 'swr';
 import NextLink from 'next/link';
 import { Box, Button, CardMedia, Grid, Link} from '@mui/material';
 import { AddOutlined, CategoryOutlined } from '@mui/icons-material';
 
 import { AdminLayout } from '@Layouts';
 import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
-import { IProduct } from '@Interfaces';
+import { useProducts } from '@context';
 
 const columns: GridColDef[] = [
     { 
@@ -48,11 +47,9 @@ const columns: GridColDef[] = [
 
 const ProductsPage = () => {
 
-    const { data, error } = useSWR<IProduct[]>('/api/admin/products');
+    const { products } = useProducts();
 
-    if( !data && !error ) return( <></> );
-
-    const rows = data!.map( product=> ({
+    const rows = products!.map( product=> ({
         id: product._id,
         img: product.images[0],
         title: product.title,
@@ -66,7 +63,7 @@ const ProductsPage = () => {
 
   return (
     <AdminLayout
-        title={`Productos (${ data?.length })`}
+        title={`Productos (${ products?.length })`}
         subTitle='Mantenimiento de productos'
         icon={ <CategoryOutlined /> }
     >
@@ -92,7 +89,7 @@ const ProductsPage = () => {
         </Grid>
 
     </AdminLayout>
-  )
-}
+  );
+};
 
 export default ProductsPage

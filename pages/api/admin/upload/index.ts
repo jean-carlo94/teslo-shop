@@ -20,7 +20,6 @@ export default function handle (req: NextApiRequest, res: NextApiResponse<Data>)
     switch ( req.method ) {
         case 'POST':
             return UploadFile( req, res );
-    
         default:
             return  res.status(400).json({ message: 'Bad request' });
     };
@@ -76,4 +75,9 @@ const UploadFile = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
     };
 
 };
+
+function DeleteFile(req: NextApiRequest, res: NextApiResponse<Data>) {
+
+    //<const destroy = await cloudinary.uploader.destroy( `TesloShop/${fileId}` );
+}
 

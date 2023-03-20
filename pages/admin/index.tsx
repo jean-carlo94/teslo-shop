@@ -30,19 +30,10 @@ const DashboardPage = () => {
   };
 
   if( error ){
-    console.log(error);
     return <Typography> Error al cargar la información </Typography>
   };
 
-  const {
-    numberOfOrders,
-    paidOrders,
-    notPaidOrders,
-    numberOfClients,
-    numberOfProducts,
-    productsWithNoInventory,
-    lowInventory,
-  } = data!;
+  const { numberOfOrders, paidOrders, notPaidOrders, numberOfClients, numberOfProducts, productsWithNoInventory, lowInventory } = data!;
 
   return (
     <AdminLayout

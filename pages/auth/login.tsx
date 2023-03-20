@@ -45,20 +45,21 @@ const LoginPage = () => {
 
   const onLoginUser = async( { email, password }:FormData ) => {
 
-    /*Método Manual
     setShowError(false);
+    /* Manual
     const isValidUser = await loginUser( email, password );
-
-    if(!isValidUser){
+    */
+    //NextAuth
+    const isValidUser = await signIn('credentials', {redirect: false, email, password });
+    
+    if( !isValidUser!.ok ){
       setShowError(true);
       setTimeout(() => setShowError(false), 3000);
       return;
-    }
+    };
 
     const destination = router.query.p?.toString() || '/';    
     router.replace(destination);
-    */
-    await signIn('credentials', { email, password });
   };
 
   return (
@@ -68,13 +69,13 @@ const LoginPage = () => {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <Typography variant='h1' component='h1'>Iniciar Sesión</Typography>
-                {/*<Chip
+                <Chip
                   label='No reconocemos ese usuario / contraseña'
                   color='error'
                   icon={ <ErrorOutline /> }
                   className='fadeIn'
                   sx={{ display: showError ? 'flex' : ' none' }}
-  />*/}
+                />
               </Grid>
 
               <Grid item xs={12}>
@@ -143,9 +144,6 @@ const LoginPage = () => {
     </AuthLayout>
   )
 };
-
-// You should use getServerSideProps when:
-// - Only if you need to pre-render a page whose data must be fetched at request time
 
 export const getServerSideProps: GetServerSideProps = async ({ req, query}) => {
   const session = await getSession({ req }); // your fetch function here 

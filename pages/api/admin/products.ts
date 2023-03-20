@@ -102,8 +102,6 @@ const createProduct = async(req: NextApiRequest, res: NextApiResponse<Data>) => 
         return res.status(400).json({ message: 'Es necesario 2 imágenes' });
     };
 
-        //TODO: posiblemente tendremos un localhost:300/products/asadas.jpg
-
     try {
 
         await db.connect();

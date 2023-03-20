@@ -1,9 +1,8 @@
 import React, { FC, useReducer, useContext, useEffect } from 'react';
-import { ICartProduct, ShippingAddress } from '@Interfaces';
+import { ICartProduct, ShippingAddress, IOrder } from '@Interfaces';
 import { CartContext, cartReducer } from './';
 import Cookie from 'js-cookie'
 import { tesloApi } from '@axiosApi';
-import { IOrder } from '../../interfaces/order';
 import axios from 'axios';
 
 export interface CartState{

@@ -2,6 +2,7 @@ import { dbUsers } from "@database";
 import NextAuth, { NextAuthOptions } from "next-auth"
 import Credentials from "next-auth/providers/credentials";
 import GithubProvider from "next-auth/providers/github"
+import GoogleProvider from "next-auth/providers/google";
 
 declare module "next-auth" {
     interface Session {
@@ -28,6 +29,10 @@ export const authOptions: NextAuthOptions = {
             //const user = { _id: "1", name: "J Smith", email: "jsmith@example.com" };
             return await dbUsers.checkUserEmailPassword( credentials!.email, credentials!.password );
         },
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!
     }),
     GithubProvider({
         clientId: process.env.GITHUB_ID!,

@@ -6,7 +6,7 @@ import { SessionProvider } from "next-auth/react"
 import { ThemeProvider } from '@mui/material'
 import { lightTheme } from '@Themes'
 import { SWRConfig } from 'swr'
-import { AuthProvider, CartProvider, UiProvider } from '@context'
+import { AuthProvider, CartProvider, ProductsProvider, UiProvider, UsersProvider } from '@context'
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -24,6 +24,8 @@ export default function App({ Component, pageProps }: AppProps) {
             AuthProvider,
             UiProvider,
             CartProvider,
+            UsersProvider,
+            ProductsProvider,
           ]}>
               <ThemeProvider theme={ lightTheme }>
                 <Component {...pageProps} />
